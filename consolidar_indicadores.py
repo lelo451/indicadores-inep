@@ -32,6 +32,21 @@ import warnings
 
 import pandas as pd
 
+from dicionario_comum import (
+    CATEG_ADMIN_CANONICAL,
+    ENGENHARIA_GRUPO_RE,
+    ORG_ACAD_CANONICAL,
+    PORTUGUESE_CONNECTORS,
+    UF_FULL_TO_ABBREV,
+    canon_key as _canon_key,
+    clean_uf,
+    drop_engenharia_grupo as _drop_engenharia_grupo,
+    map_canonical as _map_canonical,
+    strip_accents as _strip_accents,
+    strip_double_quotes as _strip_double_quotes,
+    title_case_with_connectors as title_case_ies_name,
+)
+
 warnings.filterwarnings("ignore")
 
 DATA_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -272,39 +287,6 @@ def decode_column(series: pd.Series, decoder: dict[str, str]) -> pd.Series:
     return series.map(lookup)
 
 
-UF_FULL_TO_ABBREV = {
-    "ACRE": "AC", "ALAGOAS": "AL", "AMAPA": "AP", "AMAZONAS": "AM",
-    "BAHIA": "BA", "CEARA": "CE", "DISTRITO FEDERAL": "DF",
-    "ESPIRITO SANTO": "ES", "GOIAS": "GO", "MARANHAO": "MA",
-    "MATO GROSSO": "MT", "MATO GROSSO DO SUL": "MS", "MINAS GERAIS": "MG",
-    "PARA": "PA", "PARAIBA": "PB", "PARANA": "PR", "PERNAMBUCO": "PE",
-    "PIAUI": "PI", "RIO DE JANEIRO": "RJ", "RIO GRANDE DO NORTE": "RN",
-    "RIO GRANDE DO SUL": "RS", "RONDONIA": "RO", "RORAIMA": "RR",
-    "SANTA CATARINA": "SC", "SAO PAULO": "SP", "SERGIPE": "SE",
-    "TOCANTINS": "TO",
-}
-
-
-def _strip_accents(value: str) -> str:
-    value = unicodedata.normalize("NFKD", str(value))
-    return "".join(c for c in value if not unicodedata.combining(c))
-
-
-def clean_uf(value):
-    if pd.isna(value):
-        return value
-    s = str(value).strip()
-    m = re.search(r"\(([A-Za-z]{2})\)\s*$", s)
-    if m:
-        return m.group(1).upper()
-    if len(s) == 2 and s.isalpha():
-        return s.upper()
-    s_upper = _strip_accents(s).upper()
-    if s_upper in UF_FULL_TO_ABBREV:
-        return UF_FULL_TO_ABBREV[s_upper]
-    return s
-
-
 def norm_municipio(value) -> str | None:
     if pd.isna(value):
         return None
@@ -523,114 +505,6 @@ def fill_municipio_code(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-PORTUGUESE_CONNECTORS = {
-    "a", "à", "as", "às", "ao", "aos", "o", "os",
-    "da", "das", "de", "do", "dos",
-    "e", "em", "na", "nas", "no", "nos",
-    "com", "para", "por", "sem", "sob", "sobre",
-    "ou", "entre",
-}
-
-
-# Canonical labels for Organização Acadêmica. Keys are accent-stripped,
-# lowercased, punctuation-collapsed forms so casing/spacing variants collide.
-ORG_ACAD_CANONICAL = {
-    "universidade": "Universidade",
-    "universidades": "Universidade",
-    "centro universitario": "Centro Universitário",
-    "centros universitarios": "Centro Universitário",
-    "faculdade": "Faculdade",
-    "faculdades": "Faculdade",
-    "faculdades integradas": "Faculdade",
-    "faculdade de tecnologia": "Faculdade de Tecnologia",
-    "centro federal de educacao tecnologica": "Centro Federal de Educação Tecnológica",
-    "cefet": "Centro Federal de Educação Tecnológica",
-    "centro de educacao tecnologica": "Centro de Educação Tecnológica",
-    "instituto federal de educacao ciencia e tecnologia": "Instituto Federal de Educação, Ciência e Tecnologia",
-    "ifet": "Instituto Federal de Educação, Ciência e Tecnologia",
-    "if": "Instituto Federal de Educação, Ciência e Tecnologia",
-    "instituto superior ou escola superior": "Instituto Superior ou Escola Superior",
-    "instituto superior": "Instituto Superior ou Escola Superior",
-    "escola superior": "Instituto Superior ou Escola Superior",
-}
-
-
-# Canonical labels for Categoria Administrativa. Collapses both the simple
-# pre-2017 single-token forms and the long "Pessoa Jurídica de Direito..."
-# variants onto the current INEP scheme.
-CATEG_ADMIN_CANONICAL = {
-    "publica federal": "Pública Federal",
-    "publica estadual": "Pública Estadual",
-    "publica municipal": "Pública Municipal",
-    "federal": "Pública Federal",
-    "estadual": "Pública Estadual",
-    "municipal": "Pública Municipal",
-    "publica": "Pública",
-    "privada": "Privada",
-    "privada com fins lucrativos": "Privada com fins lucrativos",
-    "privada sem fins lucrativos": "Privada sem fins lucrativos",
-    "especial": "Especial",
-    "comunitaria confessional": "Comunitária/Confessional",
-    "pessoa juridica de direito publico federal": "Pública Federal",
-    "pessoa juridica de direito publico estadual": "Pública Estadual",
-    "pessoa juridica de direito publico municipal": "Pública Municipal",
-    "pessoa juridica de direito privado com fins lucrativos": "Privada com fins lucrativos",
-    "pessoa juridica de direito privado com fins lucrativos sociedade civil": "Privada com fins lucrativos",
-    "pessoa juridica de direito privado com fins lucrativos sociedade mercantil ou comercial": "Privada com fins lucrativos",
-    "pessoa juridica de direito privado com fins lucrativos associacao de utilidade publica": "Privada com fins lucrativos",
-    "pessoa juridica de direito privado sem fins lucrativos": "Privada sem fins lucrativos",
-    "pessoa juridica de direito privado sem fins lucrativos fundacao": "Privada sem fins lucrativos",
-    "pessoa juridica de direito privado sem fins lucrativos associacao de utilidade publica": "Privada sem fins lucrativos",
-    "pessoa juridica de direito privado sem fins lucrativos sociedade": "Privada sem fins lucrativos",
-}
-
-
-def _canon_key(value) -> str:
-    s = _strip_accents(value).lower()
-    s = re.sub(r"[^\w\s]", " ", s, flags=re.UNICODE)
-    return re.sub(r"\s+", " ", s).strip()
-
-
-def _map_canonical(value, table: dict[str, str]):
-    if pd.isna(value):
-        return value
-    s = str(value).strip()
-    if not s:
-        return pd.NA
-    return table.get(_canon_key(s), s).upper()
-
-
-def title_case_ies_name(value):
-    if pd.isna(value):
-        return value
-    s = re.sub(r"\s+", " ", str(value)).strip()
-    if not s:
-        return value
-    tokens = re.split(r"([\s\-/])", s)
-    out = []
-    seen_word = False
-    for tok in tokens:
-        if not tok:
-            continue
-        if not re.search(r"\w", tok, flags=re.UNICODE):
-            out.append(tok)
-            continue
-        low = tok.lower()
-        if seen_word and low in PORTUGUESE_CONNECTORS:
-            out.append(low)
-        else:
-            out.append(low[0].upper() + low[1:])
-        seen_word = True
-    return "".join(out)
-
-
-def _strip_double_quotes(value):
-    if pd.isna(value):
-        return value
-    cleaned = str(value).replace('"', "").strip()
-    return cleaned if cleaned else pd.NA
-
-
 def _accent_count(value: str) -> int:
     return sum(1 for ch in unicodedata.normalize("NFD", value) if unicodedata.combining(ch))
 
@@ -664,6 +538,7 @@ def _build_data_canonical_map(series: pd.Series) -> dict[str, str]:
 def normalize_area_avaliacao(df: pd.DataFrame) -> pd.DataFrame:
     if "Área de Avaliação" not in df.columns:
         return df
+    df["Área de Avaliação"] = df["Área de Avaliação"].map(_drop_engenharia_grupo)
     canon = _build_data_canonical_map(df["Área de Avaliação"])
 
     def lookup(value):
