@@ -21,9 +21,13 @@ Estratégia:
 from __future__ import annotations
 
 import glob
+import gzip
+import json
 import os
 import re
 import unicodedata
+import urllib.error
+import urllib.request
 import warnings
 
 import pandas as pd
@@ -403,6 +407,97 @@ def load_municipio_lookup() -> dict[tuple[str, str], str]:
     return out
 
 
+MUNICIPIOS_CSV = os.path.join(os.path.dirname(__file__), "Microdados", "municipios.csv")
+IBGE_API = "https://servicodados.ibge.gov.br/api/v1/localidades/municipios/{cod}"
+
+
+def _normalize_code(value) -> str | None:
+    if pd.isna(value):
+        return None
+    s = str(value).strip()
+    return s[:-2] if s.endswith(".0") else s
+
+
+def _fetch_ibge_record(code: str) -> dict | None:
+    """Return {'nome': ..., 'uf': ...} for an IBGE municipality code, or None."""
+    req = urllib.request.Request(
+        IBGE_API.format(cod=code),
+        headers={"Accept-Encoding": "identity", "User-Agent": "consolidar-indicadores/1.0"},
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            raw = resp.read()
+            if raw[:2] == b"\x1f\x8b":  # gzip magic bytes
+                raw = gzip.decompress(raw)
+            data = json.loads(raw)
+        uf = (data.get("microrregiao", {})
+                  .get("mesorregiao", {})
+                  .get("UF", {})
+                  .get("sigla", ""))
+        nome = data.get("nome")
+        if not nome:
+            return None
+        return {"nome": nome, "uf": uf}
+    except (urllib.error.URLError, ValueError, TimeoutError, UnicodeDecodeError) as exc:
+        print(f"  IBGE API failed for {code}: {exc}")
+        return None
+
+
+def fill_municipio_name(df: pd.DataFrame) -> pd.DataFrame:
+    """Fill Município do Curso from Código do Município. Local lookup first;
+    falls back to the IBGE localidades API. Any names resolved via the API are
+    appended to municipios.csv so subsequent runs hit the local file."""
+    if not {"Código do Município", "Município do Curso"}.issubset(df.columns):
+        return df
+
+    mun = pd.read_csv(MUNICIPIOS_CSV, dtype=str)
+    code_col = next(c for c in mun.columns if "CÓDIGO" in c.upper() and "IBGE" in c.upper())
+    name_col = next(c for c in mun.columns
+                    if "MUNIC" in c.upper() and "IBGE" in c.upper() and "CÓDIGO" not in c.upper())
+    mun[code_col] = mun[code_col].str.strip()
+    code_to_name = {
+        c: n for c, n in zip(mun[code_col], mun[name_col].fillna("").str.strip()) if n
+    }
+
+    needs = df["Código do Município"].notna() & df["Município do Curso"].isna()
+    codes = df.loc[needs, "Código do Município"].map(_normalize_code)
+    df.loc[needs, "Município do Curso"] = codes.map(code_to_name)
+    local_filled = int(df.loc[needs, "Município do Curso"].notna().sum())
+
+    still_needs = df["Código do Município"].notna() & df["Município do Curso"].isna()
+    api_filled, updated, added = 0, 0, 0
+    if still_needs.any():
+        unresolved = (
+            df.loc[still_needs, "Código do Município"].map(_normalize_code).dropna().unique()
+        )
+        existing = set(mun[code_col])
+        for code in unresolved:
+            rec = _fetch_ibge_record(code)
+            if not rec:
+                continue
+            code_to_name[code] = rec["nome"]
+            if code in existing:
+                row_mask = mun[code_col] == code
+                mun.loc[row_mask, name_col] = rec["nome"]
+                if "UF" in mun.columns and rec.get("uf"):
+                    mun.loc[row_mask, "UF"] = mun.loc[row_mask, "UF"].fillna(rec["uf"])
+                updated += 1
+            else:
+                new_row = {code_col: code, name_col: rec["nome"], "UF": rec["uf"]}
+                mun = pd.concat([mun, pd.DataFrame([new_row])], ignore_index=True)
+                added += 1
+        df.loc[still_needs, "Município do Curso"] = (
+            df.loc[still_needs, "Código do Município"].map(_normalize_code).map(code_to_name)
+        )
+        api_filled = int(df.loc[still_needs, "Município do Curso"].notna().sum())
+        if updated or added:
+            mun.to_csv(MUNICIPIOS_CSV, index=False)
+            print(f"  municipios.csv: {updated} updated, {added} appended")
+
+    print(f"  filled {local_filled} from local + {api_filled} from IBGE API")
+    return df
+
+
 def fill_municipio_code(df: pd.DataFrame) -> pd.DataFrame:
     """Fill Código do Município from Município do Curso + Sigla da UF."""
     needed = {"Código do Município", "Município do Curso", "Sigla da UF"}
@@ -510,6 +605,9 @@ def main() -> None:
 
     print("\nFilling Código do Município from name + UF where missing...")
     courses = fill_municipio_code(courses)
+
+    print("\nFilling Município do Curso from Código (local then IBGE API)...")
+    courses = fill_municipio_name(courses)
 
     print("\nNormalizing IES metadata to latest year per Código da IES...")
     courses = normalize_ies_metadata(courses)
