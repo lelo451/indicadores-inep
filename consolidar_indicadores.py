@@ -498,8 +498,12 @@ def fill_municipio_name(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+CODE_SENTINELS = {"", "0", "1", "0.0", "1.0"}
+
+
 def fill_municipio_code(df: pd.DataFrame) -> pd.DataFrame:
-    """Fill Código do Município from Município do Curso + Sigla da UF."""
+    """Fill Código do Município from Município do Curso + Sigla da UF.
+    Treats sentinel placeholders (0, 1) as missing so they get resolved too."""
     needed = {"Código do Município", "Município do Curso", "Sigla da UF"}
     if not needed.issubset(df.columns):
         return df
@@ -511,7 +515,9 @@ def fill_municipio_code(df: pd.DataFrame) -> pd.DataFrame:
     name_norm = df["Município do Curso"].map(norm_municipio)
     keys = list(zip(uf_norm, name_norm))
     resolved = pd.Series([lookup.get(k) for k in keys], index=df.index, dtype="object")
-    mask = df["Código do Município"].isna() & resolved.notna()
+    existing = df["Código do Município"].astype("string").str.strip()
+    invalid = existing.isna() | existing.isin(CODE_SENTINELS)
+    mask = invalid & resolved.notna()
     df.loc[mask, "Código do Município"] = resolved[mask]
     print(f"  filled {int(mask.sum())} município codes from name+UF lookup")
     return df
