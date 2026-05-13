@@ -193,6 +193,9 @@ def search_consulta_avancada(driver, name: str, timeout: float = 120) -> list[di
     from bs4 import BeautifulSoup
     from selenium.webdriver.common.by import By
 
+    # Pequena pausa antes de cada busca para não bater no e-MEC em rajada.
+    time.sleep(0.5)
+
     driver.get(EMEC_FORM)
     if not _wait_for_real_page(driver, (By.ID, "txt_no_ies"), timeout=timeout):
         try:
