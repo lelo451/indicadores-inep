@@ -20,6 +20,25 @@ VARIABLE_PREFIXES = ("CO_", "NU_", "TP_", "NT_", "IN_", "ANO_", "ENEM_", "ID_", 
 SINGLE_PAIR_RE = re.compile(r"^\s*(\d+)\s*[=.]\s*(.+?)\s*$")
 HEADER_TOKENS = {"NOME", "TIPO", "TAMANHO", "DESCRIÇÃO", "CATEGORIAS", "VARIÁVEL"}
 
+# Reescreve rótulos do ENADE 2008/2011 'ENGENHARIA (GRUPO X) - <CURSO>' para
+# o nome moderno e colapsa o agregado 'ENGENHARIA (GRUPO X)' em 'ENGENHARIA'
+# antes da deduplicação, evitando linhas duplicadas para o mesmo código.
+ENGENHARIA_GRUPO_RE = re.compile(
+    r"^\s*ENGENHARIA\s*\(GRUPO\s+[IVX]+\)\s*(?:-\s*(.+?))?\s*$",
+    re.IGNORECASE,
+)
+
+
+def drop_engenharia_grupo(value) -> str:
+    if pd.isna(value):
+        return value
+    s = str(value).strip()
+    match = ENGENHARIA_GRUPO_RE.match(s)
+    if not match:
+        return s
+    sub = match.group(1)
+    return sub.strip() if sub else "ENGENHARIA"
+
 
 def find_dictionary_files(directory: str, pattern: str) -> list[tuple[int, str]]:
     files = []
@@ -169,6 +188,7 @@ def dedupe_distinct_names(long_df: pd.DataFrame) -> pd.DataFrame:
         return re.sub(r"\s+", " ", text).casefold().strip()
 
     df = long_df.copy()
+    df["descricao"] = df["descricao"].map(drop_engenharia_grupo)
     df["_norm"] = df["descricao"].map(normalize)
 
     latest = (
