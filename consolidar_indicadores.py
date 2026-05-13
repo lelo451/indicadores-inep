@@ -631,6 +631,54 @@ def _strip_double_quotes(value):
     return cleaned if cleaned else pd.NA
 
 
+def _accent_count(value: str) -> int:
+    return sum(1 for ch in unicodedata.normalize("NFD", value) if unicodedata.combining(ch))
+
+
+def _build_data_canonical_map(series: pd.Series) -> dict[str, str]:
+    """Group values by accent-stripped/lowercased/whitespace-normalized key
+    and pick a canonical representative per group. Preference order:
+    highest row count, then most diacritics (favors the properly accented
+    variant), then uppercase, then alphabetical for determinism."""
+    cleaned = series.dropna().astype(str).str.strip()
+    cleaned = cleaned[cleaned != ""]
+    counts = cleaned.value_counts()
+
+    def key(v: str) -> str:
+        return re.sub(r"\s+", " ", _strip_accents(v).lower()).strip()
+
+    groups: dict[str, list[tuple[str, int]]] = {}
+    for value, count in counts.items():
+        groups.setdefault(key(value), []).append((value, int(count)))
+
+    canonical: dict[str, str] = {}
+    for k, variants in groups.items():
+        variants.sort(
+            key=lambda item: (item[1], _accent_count(item[0]), item[0].isupper(), item[0]),
+            reverse=True,
+        )
+        canonical[k] = variants[0][0].upper()
+    return canonical
+
+
+def normalize_area_avaliacao(df: pd.DataFrame) -> pd.DataFrame:
+    if "Área de Avaliação" not in df.columns:
+        return df
+    canon = _build_data_canonical_map(df["Área de Avaliação"])
+
+    def lookup(value):
+        if pd.isna(value):
+            return value
+        s = str(value).strip()
+        if not s:
+            return pd.NA
+        k = re.sub(r"\s+", " ", _strip_accents(s).lower()).strip()
+        return canon.get(k, s.upper())
+
+    df["Área de Avaliação"] = df["Área de Avaliação"].map(lookup)
+    return df
+
+
 def normalize_text_columns(df: pd.DataFrame) -> pd.DataFrame:
     if "Organização Acadêmica" in df.columns:
         df["Organização Acadêmica"] = df["Organização Acadêmica"].map(
@@ -646,6 +694,7 @@ def normalize_text_columns(df: pd.DataFrame) -> pd.DataFrame:
         df["Sigla da IES"] = df["Sigla da IES"].map(_strip_double_quotes)
     if "Nome da IES" in df.columns:
         df["Nome da IES"] = df["Nome da IES"].map(title_case_ies_name)
+    df = normalize_area_avaliacao(df)
     return df
 
 
