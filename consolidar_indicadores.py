@@ -482,6 +482,66 @@ def fill_municipio_name(df: pd.DataFrame) -> pd.DataFrame:
 
 CODE_SENTINELS = {"", "0", "1", "0.0", "1.0"}
 
+IES_SIGLAS_CACHE = os.path.join(DATA_ROOT, "Microdados", "ies_siglas.csv")
+
+
+def _load_emec_cache() -> pd.DataFrame | None:
+    if not os.path.exists(IES_SIGLAS_CACHE):
+        return None
+    cache = pd.read_csv(IES_SIGLAS_CACHE, dtype=str)
+    return cache[cache["match_type"].isin(["code_match", "name_match"])]
+
+
+def fill_sigla_from_cache(df: pd.DataFrame) -> pd.DataFrame:
+    """Preenche 'Sigla da IES' onde está vazia/0 usando o cache do e-MEC."""
+    cache = _load_emec_cache()
+    if cache is None or not {"Sigla da IES", "Código da IES"}.issubset(df.columns):
+        return df
+    valid = cache[cache["sigla"].notna() & (cache["sigla"] != "")]
+    mapping = dict(zip(valid["codigo_ies"], valid["sigla"]))
+    if not mapping:
+        return df
+    sigla = df["Sigla da IES"].astype("string").str.strip()
+    missing = sigla.isna() | sigla.isin(["", "0", "0.0"])
+    codes = df["Código da IES"].astype("string").str.strip()
+    resolved = codes.map(mapping)
+    mask = missing & resolved.notna()
+    df.loc[mask, "Sigla da IES"] = resolved[mask]
+    print(f"  filled {int(mask.sum())} siglas from cache ({len(mapping)} entries)")
+    return df
+
+
+def fill_org_categ_from_cache(df: pd.DataFrame) -> pd.DataFrame:
+    """Preenche Organização Acadêmica e Categoria Administrativa ausentes
+    usando o cache do e-MEC. Aplica as mesmas tabelas canônicas
+    (ORG_ACAD_CANONICAL / CATEG_ADMIN_CANONICAL) para uniformizar."""
+    cache = _load_emec_cache()
+    if cache is None or "Código da IES" not in df.columns:
+        return df
+    codes = df["Código da IES"].astype("string").str.strip()
+
+    for col, cache_col, table in (
+        ("Organização Acadêmica", "organizacao_emec", ORG_ACAD_CANONICAL),
+        ("Categoria Administrativa", "categoria_emec", CATEG_ADMIN_CANONICAL),
+    ):
+        if col not in df.columns or cache_col not in cache.columns:
+            continue
+        valid = cache[cache[cache_col].notna() & (cache[cache_col] != "")]
+        mapping = {
+            c: _map_canonical(v, table)
+            for c, v in zip(valid["codigo_ies"], valid[cache_col])
+            if _map_canonical(v, table)
+        }
+        if not mapping:
+            continue
+        existing = df[col].astype("string").str.strip()
+        missing = existing.isna() | existing.isin(["", "0", "0.0"])
+        resolved = codes.map(mapping)
+        mask = missing & resolved.notna()
+        df.loc[mask, col] = resolved[mask]
+        print(f"  filled {int(mask.sum())} {col} from cache")
+    return df
+
 
 def fill_municipio_code(df: pd.DataFrame) -> pd.DataFrame:
     """Fill Código do Município from Município do Curso + Sigla da UF.
@@ -664,6 +724,12 @@ def main() -> None:
 
     print("\nFilling Município do Curso from Código (local then IBGE API)...")
     courses = fill_municipio_name(courses)
+
+    print("\nFilling Sigla da IES from eMEC cache (if present)...")
+    courses = fill_sigla_from_cache(courses)
+
+    print("\nFilling Organização/Categoria from eMEC cache (if present)...")
+    courses = fill_org_categ_from_cache(courses)
 
     print("\nNormalizing IES metadata to latest year per Código da IES...")
     courses = normalize_ies_metadata(courses)
