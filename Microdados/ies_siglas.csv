@@ -8,12 +8,19 @@ codigo_ies,sigla,nome_emec,organizacao_emec,categoria_emec,match_type,fetched_at
 254,UNI-BAN,CENTRO UNIVERSITÁRIO UNI-BAN,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-13
 267,-,CENTRO UNIVERSITÁRIO ESPÍRITO-SANTENSE/FAESA,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
 270,,,,,not_found,2026-05-13
+290,,,,,not_found,2026-05-13
+291,,,,,not_found,2026-05-13
 296,-,Centro Universitário da Região da Campanha,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
 339,,,,,not_found,2026-05-13
+413,,,,,not_found,2026-05-13
+414,,,,,not_found,2026-05-13
+487,,,,,not_found,2026-05-13
+499,,,,,not_found,2026-05-13
 510,-,FACULDADE WENCESLAU BRAZ,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
 526,-,CENTRO UNIVERSITÁRIO BRAZ CUBAS,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-13
 627,-,FACULDADE CNEC VARGINHA,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
 631,-,FACULDADE CNEC FARROUPILHA,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+690,,,,,not_found,2026-05-13
 712,-,CENTRO UNIVERSITÁRIO IBMR,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-13
 715,-,FAE CENTRO UNIVERSITÁRIO,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
 716,-,FACULDADES INTEGRADAS DE BOTUCATU,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
@@ -120,6 +127,7 @@ codigo_ies,sigla,nome_emec,organizacao_emec,categoria_emec,match_type,fetched_at
 2122,-,"CENTRO UNIVERSITÁRIO ESTÁCIO DE SERGIPE Em Supervisão - Procedimento Sancionador com Medida Cautelar: Portaria nº 347/2020, publicada no Diário Oficial da União - DOU em 23/10/2020: Medidas cautelares aplicadas ao curso de Psicologia (cód. e-MEC nº 110360).",Centro Universitário,Privada com fins lucrativos,code_match,2026-05-13
 2127,,,,,not_found,2026-05-13
 2132,-,CENTRO UNIVERSITÁRIO UNINORTE,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-13
+2134,-,FACULDADE ASSEMBLEIANA DO BRASIL,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
 2184,-,FACULDADE CNEC GRAVATAÍ,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
 2191,-,FACULDADE ANHANGUERA DE PELOTAS,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
 2194,-,FACULDADE ANHANGUERA DO RIO GRANDE,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
@@ -134,6 +142,7 @@ codigo_ies,sigla,nome_emec,organizacao_emec,categoria_emec,match_type,fetched_at
 2353,,,,,not_found,2026-05-13
 2355,-,FACULDADE ANHANGUERA DE MATÃO,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
 2368,-,FACULDADE SÃO LEOPOLDO MANDIC,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+2399,,,,,not_found,2026-05-13
 2417,,,,,not_found,2026-05-13
 2443,-,FACULDADE FUNORTE DE JANAÚBA,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
 2497,UniAteneu,CENTRO UNIVERSITÁRIO ATENEU,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-13
@@ -141,29 +150,170 @@ codigo_ies,sigla,nome_emec,organizacao_emec,categoria_emec,match_type,fetched_at
 2512,,,,,not_found,2026-05-13
 2656,,,,,not_found,2026-05-13
 2676,UNILASALLE/MANAUS,CENTRO UNIVERSITÁRIO LA SALLE DE MANAUS,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+2684,,,,,not_found,2026-05-13
+2738,,,,,not_found,2026-05-13
 2756,-,FACULDADE ANHANGUERA DE VALPARAÍSO,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
 2773,-,FACULDADE ANHANGUERA DE MACAPÁ,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+2776,,,,,not_found,2026-05-13
 2791,,,,,not_found,2026-05-13
 2814,,,,,not_found,2026-05-13
+2853,,,,,not_found,2026-05-13
 2879,-,FACULDADE DE CAIEIRAS,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
 2944,-,FACULDADE ANHANGUERA DE ITABUNA,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
 2964,-,FACULDADE PROJEÇÃO DO GUARÁ,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
 2974,,,,,not_found,2026-05-13
+2988,,,,,not_found,2026-05-13
 3170,-,FACULDADE ESTÁCIO DE FLORIANÓPOLIS - ESTÁCIO FLORIANÓPOLIS,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
 3171,,,,,not_found,2026-05-13
+3174,,,,,not_found,2026-05-13
+3175,,,,,not_found,2026-05-13
+3185,,,,,not_found,2026-05-13
+3209,,,,,not_found,2026-05-13
+3333,UNIFTEC,CENTRO UNIVERSITÁRIO UNIFTEC,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-13
 3437,,,,,not_found,2026-05-13
 3448,IBITURUNA,Faculdade Ibituruna,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+3523,-,FACULDADE DE DIREITO DA FUNDAÇÃO ESCOLA SUPERIOR DO MINISTÉRIO PÚBLICO,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+3594,,,,,not_found,2026-05-13
+3595,,,,,not_found,2026-05-13
+3596,,,,,not_found,2026-05-13
 3603,-,FACULDADE ANHANGUERA DE GUARULHOS,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+3608,,,,,not_found,2026-05-13
 3612,-,FACULDADE ANHANGUERA DE VALINHOS,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+3648,-,INSTITUTO DE ENSINO SUPERIOR DE CUIABÁ,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
 3688,-,FACULDADES INTEGRADAS DO VALE DO IVAÍ,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+3701,,,,,not_found,2026-05-13
+3741,-,Faculdade Pitágoras Bacabal Mearim,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+3743,,,,,not_found,2026-05-13
+3756,-,Faculdade ALFAUNIPAC de Almenara,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+3758,-,Faculdade UNISUL de Florianópolis,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
 3768,-,Faculdade IBGEN,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+3803,,,,,not_found,2026-05-13
+3815,-,FACULDADE DE DIREITO DE ALTA FLORESTA,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+3817,-,Centro Universitário Maurício de Nassau de João Pessoa,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+3823,-,INSTITUTO DE EDUCAÇÃO SUPERIOR DE POUSO ALEGRE,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+3838,,,,,not_found,2026-05-13
 3847,-,FACULDADE BAIANA DE DIREITO E GESTÃO,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+3876,-,Faculdade Unyleya,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
 3921,-,CENTRO UNIVERSITÁRIO ARNALDO HORÁCIO FERREIRA,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-13
 3936,,,,,not_found,2026-05-13
 3937,-,Faculdade Anhanguera de Indaiatuba,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+3939,-,"FACULDADE ALIANÇA DE ITABERAI Em supervisão - Procedimento Sancionador: Portaria nº 591/2025, publicada no DOU em 4/9/2025.",Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+3946,-,FACULDADE SENAC TUBARÃO,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+3990,,,,,not_found,2026-05-13
 4013,-,FACULDADE ANHANGUERA DE RIO CLARO,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+4040,,,,,not_found,2026-05-13
+4121,-,CENTRO UNIVERSITÁRIO MAURICIO DE NASSAU DE ARACAJU,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
 4138,-,FACULDADE ANHANGUERA DE SANTA BÁRBARA,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
 4141,-,FACULDADE ANHANGUERA DE TAUBATÉ,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+4209,,,,,not_found,2026-05-13
+4253,,,,,not_found,2026-05-13
 4293,,,,,not_found,2026-05-13
+4294,-,FACULDADE SENAC JARAGUÁ DO SUL,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+4371,,,,,not_found,2026-05-13
+4416,PULSAR,FACULDADE PULSAR,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+4429,-,CENTRO UNIVERSITÁRIO UNIGRAN CAPITAL,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+4452,-,CENTRO UNIVERSITÁRIO ANHANGUERA DE MARABÁ,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-13
+4495,-,FACULDADE ANHANGUERA JARAGUÁ DO SUL,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+4532,-,FACULDADE DE TECNOLOGIA SENAI CAMPO GRANDE,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+4567,-,FACULDADE CENTRO MATO-GROSSENSE,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+4584,,,,,not_found,2026-05-13
+4596,-,FACULDADE REGES DE RIBEIRÃO PRETO,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+4597,-,FACULDADE FUTURA,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+4605,,,,,not_found,2026-05-13
+4610,-,FACULDADE DE TECNOLOGIA ASSESSORITEC,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+4616,-,FACULDADE ANHANGUERA DE CAXIAS DO SUL,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+4652,-,FACULDADE ANHANGÜERA DE SÃO JOSÉ,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+4656,-,FACULDADE ANHANGÜERA DE PIRACICABA,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+4681,,,,,not_found,2026-05-13
+4693,,,,,not_found,2026-05-13
+4731,-,"FACULDADE MESSIANICA Em Descredenciamento voluntário: em modalidade presencial, conforme processo SEI nº 23000.028892/2022-22.",Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+4742,-,Faculdade Uninassau Olinda - Nassau Olinda,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+4746,,,,,not_found,2026-05-13
+4784,-,FACULDADE CDL,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+4814,-,FACULDADE DE TECNOLOGIA SENAI FELIX GUISARD,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+4819,,,,,not_found,2026-05-13
+4820,-,FACULDADE DE TECNOLOGIA SENAI ANTÔNIO ADOLPHO LOBBE,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+4826,-,FACULDADE ANHANGÜERA DE CAMPINAS,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+4829,-,ESCOLA SUPERIOR DE ARTES CÉLIA HELENA,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+4847,Unicatólica,CENTRO UNIVERSITÁRIO CATÓLICA DO RIO GRANDE DO NORTE,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
 4854,ESTÁCIO CURITIBA,Faculdade Estácio de Curitiba,Faculdade,Privada com fins lucrativos,name_match,2026-05-13
+4863,-,FACULDADE ANHANGUERA DE POÇOS DE CALDAS,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+4865,,,,,not_found,2026-05-13
+4867,,,,,not_found,2026-05-13
+4878,-,FACULDADE ANHANGUERA DE ITAPECERICA DA SERRA,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+4902,,,,,not_found,2026-05-13
+4917,IDEAU,FACULDADE IDEAU DE BAGÉ,Faculdade,Privada com fins lucrativos,name_match,2026-05-13
+4938,,,,,not_found,2026-05-13
+4943,-,STRONG BUSINESS SCHOOL BS,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+4950,,,,,not_found,2026-05-13
+4959,-,FACULDADE ANHANGUERA DE FEIRA DE SANTANA,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+5025,Ceunina,Centro Universitário Nelson Akiyoshi,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-13
+5046,,,,,not_found,2026-05-13
+5048,,,,,not_found,2026-05-13
+5066,,,,,not_found,2026-05-13
+5107,-,FACULDADE SOGIPA DE EDUCAÇÃO FÍSICA,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+5124,,,,,not_found,2026-05-13
+5133,-,FACULDADE SENAC SÃO MIGUEL DO OESTE,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+5186,,,,,not_found,2026-05-13
 5215,-,CENTRO UNIVERSITÁRIO PADRE ALBINO,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+5277,FACBRAS,Faculdade Unibras Brasília,Faculdade,Privada com fins lucrativos,name_match,2026-05-13
+5288,-,FACULDADE ANHANGÜERA DE RIBEIRÃO PRETO,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+5290,,,,,not_found,2026-05-13
+5303,-,FACULDADE ANHANGÜERA DE DOURADOS,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+5388,,,,,not_found,2026-05-13
+5430,,,,,not_found,2026-05-13
+5442,-,Faculdade Presidente Antônio Carlos de Nova Lima,Faculdade,Privada sem fins lucrativos,name_match,2026-05-13
+5451,-,FACULDADE ANHANGÜERA DE BAURU,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+5466,,,,,not_found,2026-05-13
+5511,-,CENTRO UNIVERSITÁRIO CAMPO REAL,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-13
+5550,-,FACULDADE ANHANGUERA DE ANÁPOLIS,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+5555,-,FACULDADE ANHANGUERA DE JACAREÍ,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+5633,-,FACULDADE DE TECNOLOGIA DE BRAGANÇA PAULISTA,Faculdade,Pública Estadual,code_match,2026-05-13
+5663,,,,,not_found,2026-05-13
+5668,-,FACULDADE ANHANGUERA DE JOINVILLE,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+5669,-,"(5669) CENTRO UNIVERSITÁRIO ETEP Sub Judice: Despacho N. S/N/2023 - DOU 20 de junho de 2023
+Credenciada EAD por Medida Judicial - Parecer de Força Executória nº 00002/2023/CORESP1R/PRU1R/PGU/AGU, da
+Procuradoria-Regional da 1ª Região, na Nota nº 00444/2023/CONJUR-MEC/CGU/AGU.",Centro Universitário,Privada com fins lucrativos,code_match,2026-05-13
+5671,-,CENTRO UNIVERSITÁRIO SÃO JOSÉ DE ITAPERUNA,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+10058,FFV,FACULDADE DA FRATERNIDADE DE VALENÇA,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+10418,,,,,not_found,2026-05-13
+10588,,,,,not_found,2026-05-13
+11563,,,,,not_found,2026-05-13
+11604,-,FACULDADE SANTA RITA DE CHAPECÓ,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+12005,,,,,not_found,2026-05-13
+12523,-,Faculdade da Serra Gaúcha de Bento Gonçalves,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+12661,-,FACULDADE DE TECNOLOGIA SAINT PAUL,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+12766,-,FACULDADE UNIÃO DE CAMPO MOURÃO,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+12923,,,,,not_found,2026-05-13
+13133,-,FACULDADE ANHANGUERA DE GOIÂNIA,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+13488,-,FACULDADE SEQÜENCIAL,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+13538,,,,,not_found,2026-05-13
+13657,,,,,not_found,2026-05-13
+13674,,,,,not_found,2026-05-13
+13796,-,FACULDADE DE PORTO FELIZ,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+13811,,,,,not_found,2026-05-13
+13856,,,,,not_found,2026-05-13
+13889,-,FACULDADE ITAPURANGA,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+14029,-,Faculdade Presidente Antônio Carlos de Aimorés,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+14115,-,Faculdade Presidente Antônio Carlos de Ponte Nova,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+14121,,,,,not_found,2026-05-13
+14147,,,,,not_found,2026-05-13
+14151,-,Faculdade Presidente Antônio Carlos de Nova Lima,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+14156,AlfaUnipac,Centro Universitário AlfaUnipac,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-13
+14243,-,Faculdade Presidente Antônio Carlos de Itabirito,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+14244,,,,,not_found,2026-05-13
+14246,-,Faculdade Presidente Antônio Carlos de Uberaba,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+14247,,,,,not_found,2026-05-13
+14248,-,Faculdade Presidente Antônio Carlos de Uberlândia,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+14249,,,,,not_found,2026-05-13
+14263,,,,,not_found,2026-05-13
+14429,-,FACULDADE ANHANGUERA DE MACEIÓ,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+14784,,,,,not_found,2026-05-13
+14869,FAIPE,Faculdade Faipe,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+15357,-,Faculdade Presidente Antônio Carlos de Ubá,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+15453,-,Faculdade Presidente Antônio Carlos de Conselheiro Lafaiete,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+15467,-,Faculdade Presidente Antônio Carlos de Visconde do Rio Branco,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+15468,-,Faculdade Presidente Antônio Carlos de Leopoldina,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+15680,-,Fatec Cruzeiro - Prof. Waldomiro May,Faculdade,Pública Estadual,code_match,2026-05-13
+16914,,,,,not_found,2026-05-13
+18874,-,FACULDADE RAIMUNDO MARINHO DE PENEDO,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
