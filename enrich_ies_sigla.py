@@ -26,6 +26,7 @@ Requisitos:
 
 from __future__ import annotations
 
+import base64
 import csv
 import os
 import re
@@ -40,6 +41,21 @@ INDICADORES = DATA_ROOT / "indicadores_consolidados.xlsx"
 CACHE = DATA_ROOT / "Microdados" / "ies_siglas.csv"
 
 EMEC_FORM = "https://emec.mec.gov.br/emec/nova#avancada"
+EMEC_DETAIL = (
+    "https://emec.mec.gov.br/emec/consulta-cadastro/detalhes-ies/"
+    "d96957f455f6405d14c6542552b0f6eb/{b64}"
+)
+
+# Notas administrativas que o e-MEC anexa depois da sigla na célula de nome
+ADMIN_NOTE_RE = re.compile(
+    r"\s+(?:Unifica[çc][ãa]o|Ades[ãa]o|Extinta|Processo n|Transformada|Migra[çc][ãa]o|"
+    r"Recredenciament|Credenciament|Situa[çc][ãa]o)\b.*$",
+    re.IGNORECASE,
+)
+
+
+def _encode_code(code) -> str:
+    return base64.b64encode(str(code).encode("utf-8")).decode("utf-8")
 
 CACHE_FIELDS = [
     "codigo_ies", "sigla", "nome_emec",
@@ -138,7 +154,6 @@ def _parse_result_row(tr) -> dict | None:
         codigo = m.group(1)
         nome = m.group(2).strip()
     else:
-        # tenta extrair codigo do onclick da lupa
         if len(tds) >= 9:
             img = tds[8].find("img", attrs={"onclick": True})
             if img:
@@ -152,6 +167,9 @@ def _parse_result_row(tr) -> dict | None:
                 return None
         else:
             return None
+    # Strip the admin notes that eMEC concatenates onto the name cell
+    nome = ADMIN_NOTE_RE.sub("", nome).strip()
+    nome = re.sub(r"\s*-\s*$", "", nome).strip()
     sigla = tds[1].get_text(" ", strip=True)
     municipio_uf = tds[2].get_text(" ", strip=True)
     organizacao = tds[3].get_text(" ", strip=True)
@@ -341,8 +359,16 @@ def main() -> None:
     try:
         for i, (code, name) in enumerate(todo, 1):
             print(f"[{i}/{len(todo)}] code={code} name={name!r}", flush=True)
-            candidates = safe_call(search_consulta_avancada, name) or []
+            # 1) Busca por código primeiro (o campo aceita um número e devolve
+            # exatamente uma linha, caso o código exista).
+            candidates = safe_call(search_consulta_avancada, code) or []
             chosen, match_type = pick_match(candidates, code, name)
+            # 2) Se o código não trouxe nada utilizável, tenta por nome
+            if not chosen:
+                candidates_name = safe_call(search_consulta_avancada, name) or []
+                chosen2, match_type2 = pick_match(candidates_name, code, name)
+                if chosen2:
+                    chosen, match_type = chosen2, match_type2
             if chosen:
                 print(
                     f"      {match_type}: code={chosen['codigo']} sigla={chosen['sigla']!r} "
@@ -350,7 +376,7 @@ def main() -> None:
                     flush=True,
                 )
             else:
-                print(f"      {match_type} ({len(candidates)} candidates)", flush=True)
+                print(f"      {match_type}", flush=True)
 
             picked = chosen or {}
             cache[code] = {
