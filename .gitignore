@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Excel/LibreOffice lock files
+~$*.xls
+~$*.xlsx
+~$*.ods
+.~lock.*#
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Raw data (large; uncomment if you don't want to track it in git)
+# data/
+# Microdados/
+
+# Generated consolidations (uncomment if you'd rather regenerate from source)
+# dicionario_enade_consolidado.xlsx
+# dicionario_idd_consolidado.xlsx
+# indicadores_consolidados.xlsx
