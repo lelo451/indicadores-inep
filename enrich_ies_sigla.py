@@ -1,26 +1,31 @@
 # -*- coding: utf-8 -*-
-"""Busca a sigla das IES no e-MEC para preencher 'Sigla da IES' onde está
-vazia/0 no consolidado.
+"""Busca a Sigla, Organização Acadêmica e Categoria Administrativa das IES
+no e-MEC para preencher as colunas faltantes em indicadores_consolidados.xlsx.
 
-A primeira tentativa usa o Código da IES. Se a página do e-MEC para aquele
-código não carrega ou retorna um nome muito diferente do que temos em
-'Nome da IES', registramos o resultado como 'code_mismatch' para inspeção
-posterior (busca por nome via formulário fica como TODO — o e-MEC bloqueia
-URLs simples e exige interação no formulário).
+Para cada IES com 'Sigla da IES' vazia/0, faz uma consulta no formulário
+'Consulta Avançada' (https://emec.mec.gov.br/emec/nova#avancada) procurando
+pelo Nome da IES. A tabela de resultados tem colunas bem definidas
+(Instituição, Sigla, Município/UF, Org. Acadêmica, Cat. Administrativa),
+então extraímos cada campo do td correspondente — bem mais robusto do que
+parsear a célula 'Nome da IES - Sigla' da página de detalhes.
 
-Resultados são gravados em 'Microdados/ies_siglas.csv'. O consolidador lê
-esse cache em 'fill_sigla_from_cache' e usa para preencher a coluna.
+Cada linha de resultado tem o código no texto da td[0] ('(N) NOME') e
+também no onclick da lupa (td[8]: 'abrirPopUpDetalhesIes( N )'). Quando o
+código da nossa base aparece entre os candidatos, usamos esse registro
+(match_type='code_match'); caso contrário, escolhemos o melhor nome
+(match_type='name_match') ou marcamos 'not_found'.
+
+Resultados ficam em Microdados/ies_siglas.csv e o consolidador os usa
+em fill_sigla_from_cache / fill_org_categ_from_cache.
 
 Requisitos:
-- undetected-chromedriver  (pip install undetected-chromedriver)
-- Chrome real instalado em /usr/bin/google-chrome
-- DISPLAY disponível (e-MEC é protegido por Cloudflare; modo headless é
-  bloqueado, então o navegador abre uma janela)
+- undetected-chromedriver (pip install undetected-chromedriver)
+- Chrome real em /usr/bin/google-chrome
+- DISPLAY disponível (Cloudflare bloqueia modo headless)
 """
 
 from __future__ import annotations
 
-import base64
 import csv
 import os
 import re
@@ -34,10 +39,7 @@ DATA_ROOT = Path(__file__).parent.resolve()
 INDICADORES = DATA_ROOT / "indicadores_consolidados.xlsx"
 CACHE = DATA_ROOT / "Microdados" / "ies_siglas.csv"
 
-EMEC_DETAIL = (
-    "https://emec.mec.gov.br/emec/consulta-cadastro/detalhes-ies/"
-    "d96957f455f6405d14c6542552b0f6eb/{b64}"
-)
+EMEC_FORM = "https://emec.mec.gov.br/emec/nova#avancada"
 
 CACHE_FIELDS = [
     "codigo_ies", "sigla", "nome_emec",
@@ -45,14 +47,15 @@ CACHE_FIELDS = [
     "match_type", "fetched_at",
 ]
 
-# Quão similar (Jaccard sobre tokens normalizados) os dois nomes precisam
-# ser para considerarmos que o e-MEC retornou a IES certa.
+# Quão similar dois nomes precisam ser para um 'name_match' ser aceito.
 NAME_MATCH_THRESHOLD = 0.5
 
+CLOUDFLARE_TITLES = ("just a moment", "checking your browser", "verifying")
 
-def _encode_code(code) -> str:
-    return base64.b64encode(str(code).encode("utf-8")).decode("utf-8")
 
+# ---------------------------------------------------------------------------
+# Comparação de nomes (tolera typos e reordenamentos)
+# ---------------------------------------------------------------------------
 
 def _norm_name(value) -> str:
     s = unicodedata.normalize("NFKD", str(value))
@@ -61,9 +64,7 @@ def _norm_name(value) -> str:
 
 
 def _name_similarity(a: str, b: str) -> float:
-    """Combina similaridade Jaccard (tokens) com SequenceMatcher (char-level).
-    Jaccard pega bem reordenamentos; SequenceMatcher tolera typos ('Facudade'
-    vs 'Faculdade'). Usamos o maior dos dois para ser generoso com matches."""
+    """Maior entre Jaccard (tokens) e SequenceMatcher (char-level)."""
     from difflib import SequenceMatcher
 
     norm_a = _norm_name(a)
@@ -77,71 +78,9 @@ def _name_similarity(a: str, b: str) -> float:
     return max(jaccard, char_ratio)
 
 
-# Notas administrativas que o e-MEC concatena depois da sigla na mesma célula.
-# Cortamos a partir delas para não contaminarem o nome/sigla extraídos.
-ADMIN_NOTE_RE = re.compile(
-    r"\s+(?:Unifica[çc][ãa]o|Ades[ãa]o|Extinta|Processo n|Transformada|Migra[çc][ãa]o|"
-    r"Recredenciament|Credenciament|Situa[çc][ãa]o)\b.*$",
-    re.IGNORECASE,
-)
-
-
-def _parse_label_value(value: str) -> dict | None:
-    """Parse '(codigo) NOME - SIGLA [notas administrativas]' em {codigo, nome, sigla}.
-
-    O e-MEC costuma anexar texto adicional (ex.: 'Unificação de Mantidas:
-    Processo nº...') na mesma célula da sigla. Removemos esse rastro antes de
-    separar nome/sigla; depois usamos rpartition no último ' - ' (siglas como
-    'UNI-BAN' contêm hífen, então split simples atrapalha)."""
-    m = re.match(r"\s*\((\d+)\)\s*(.+?)\s*$", value)
-    if not m:
-        return None
-    codigo = m.group(1)
-    rest = ADMIN_NOTE_RE.sub("", m.group(2))
-    # Remove um traço residual deixado por 'NOME - <nota removida>'
-    rest = re.sub(r"\s*-\s*$", "", rest).strip()
-    if " - " in rest:
-        nome, _, sigla = rest.rpartition(" - ")
-        return {"codigo": codigo, "nome": nome.strip(), "sigla": sigla.strip() or None}
-    return {"codigo": codigo, "nome": rest, "sigla": None}
-
-
-def _extract_value_for_label(palette, label_prefix: str) -> str | None:
-    """Encontra a célula cujo texto começa com label_prefix e retorna o texto
-    da célula seguinte. Vários tds aninhados podem começar com o mesmo
-    prefixo (o pai contém o filho na busca recursiva), então pulamos
-    candidatos sem irmão td e continuamos procurando."""
-    for td in palette.find_all("td"):
-        text = td.get_text(" ", strip=True)
-        if not text.startswith(label_prefix):
-            continue
-        value_td = td.find_next_sibling("td")
-        if not value_td:
-            continue
-        div = value_td.find("div")
-        return (div.get_text(" ", strip=True) if div else value_td.get_text(" ", strip=True))
-    return None
-
-
-def _parse_ies_detail(html: str) -> dict | None:
-    """Retorna {codigo, nome, sigla, organizacao, categoria} da página de
-    detalhes do IES."""
-    from bs4 import BeautifulSoup
-
-    soup = BeautifulSoup(html, "html.parser")
-    palette = soup.find(id="paletaCadastro")
-    if not palette:
-        return None
-    nome_sigla = _extract_value_for_label(palette, "Nome da IES")
-    if not nome_sigla:
-        return None
-    parsed = _parse_label_value(nome_sigla)
-    if not parsed:
-        return None
-    parsed["organizacao"] = _extract_value_for_label(palette, "Organização Acadêmica")
-    parsed["categoria"] = _extract_value_for_label(palette, "Categoria Administrativa")
-    return parsed
-
+# ---------------------------------------------------------------------------
+# Selenium helpers (Chrome + Cloudflare)
+# ---------------------------------------------------------------------------
 
 def _start_browser():
     import undetected_chromedriver as uc
@@ -157,25 +96,16 @@ def _start_browser():
     )
 
 
-CLOUDFLARE_TITLES = ("just a moment", "checking your browser", "verifying")
-
-
 def _wait_for_real_page(driver, target_locator, timeout: float = 120) -> bool:
-    """Espera o desafio do Cloudflare resolver e o elemento alvo aparecer.
-    Pesquisa o elemento a cada 1s; imprime progresso a cada 10s."""
+    """Espera o Cloudflare resolver e o elemento alvo existir."""
     by, value = target_locator
     deadline = time.time() + timeout
     last_report = 0.0
     while time.time() < deadline:
         try:
-            el = driver.find_element(by, value)
-            # Aceita qualquer aparição do elemento (visível ou não); o caller
-            # confirma o conteúdo logo em seguida.
-            if el is not None:
+            if driver.find_element(by, value) is not None:
                 return True
         except Exception:
-            # NoSuchElement, StaleElement, sessão errada — tudo se traduz em
-            # "ainda não pronto"; continua aguardando.
             pass
         if time.time() - last_report >= 10:
             try:
@@ -188,53 +118,65 @@ def _wait_for_real_page(driver, target_locator, timeout: float = 120) -> bool:
     return False
 
 
-# XPath para o subtítulo "IES" dentro de paletaCadastro — só aparece depois
-# que o conteúdo é carregado por AJAX dentro do wrapper inicial.
-IES_SUBTITLE_XPATH = "/html/body/div[1]/div[2]/div/table/tbody/tr[3]/td/div"
+# ---------------------------------------------------------------------------
+# Consulta Avançada
+# ---------------------------------------------------------------------------
 
-
-def fetch_by_code(driver, code: str, timeout: float = 120) -> dict | None:
-    """Carrega a página do código no e-MEC e devolve o registro analisado.
-
-    A URL /detalhes-ies devolve só um wrapper; o conteúdo real é carregado
-    por jQuery .load() dentro de div#div_conteudo, e a página inteira só
-    fica utilizável depois que o AJAX termina. Esperamos:
-    1) Cloudflare resolver (#paletaCadastro existir)
-    2) AJAX popular o conteúdo (o subtítulo 'IES' aparecer)"""
-    from selenium.webdriver.common.by import By
-    from selenium.webdriver.support.ui import WebDriverWait
-    from selenium.webdriver.support import expected_conditions as EC
-    from selenium.common.exceptions import TimeoutException
-
-    driver.get(EMEC_DETAIL.format(b64=_encode_code(code)))
-
-    if not _wait_for_real_page(driver, (By.ID, "paletaCadastro"), timeout=timeout):
-        print(f"      paletaCadastro nunca apareceu (Cloudflare?)", flush=True)
+def _parse_result_row(tr) -> dict | None:
+    """Extrai {codigo, nome, sigla, organizacao, categoria, municipio_uf}
+    de uma <tr class='linha_tr_body_nova_grid'>. Colunas:
+      td[0]: '(codigo) NOME'  td[1]: sigla  td[2]: município/UF
+      td[3]: organização       td[4]: categoria
+      td[8]: <img onclick='...abrirPopUpDetalhesIes( N )'>
+    """
+    tds = tr.find_all("td")
+    if len(tds) < 5:
         return None
+    nome_td_text = tds[0].get_text(" ", strip=True)
+    m = re.match(r"\s*\((\d+)\)\s*(.+?)\s*$", nome_td_text)
+    if m:
+        codigo = m.group(1)
+        nome = m.group(2).strip()
+    else:
+        # tenta extrair codigo do onclick da lupa
+        if len(tds) >= 9:
+            img = tds[8].find("img", attrs={"onclick": True})
+            if img:
+                m2 = re.search(r"abrirPopUpDetalhesIes\(\s*(\d+)", img.get("onclick", ""))
+                if m2:
+                    codigo = m2.group(1)
+                    nome = nome_td_text
+                else:
+                    return None
+            else:
+                return None
+        else:
+            return None
+    sigla = tds[1].get_text(" ", strip=True)
+    municipio_uf = tds[2].get_text(" ", strip=True)
+    organizacao = tds[3].get_text(" ", strip=True)
+    categoria = tds[4].get_text(" ", strip=True)
+    return {
+        "codigo": codigo,
+        "nome": nome,
+        "sigla": sigla or None,
+        "municipio_uf": municipio_uf or None,
+        "organizacao": organizacao or None,
+        "categoria": categoria or None,
+    }
 
-    try:
-        WebDriverWait(driver, 90).until(
-            EC.presence_of_element_located((By.XPATH, IES_SUBTITLE_XPATH))
-        )
-    except TimeoutException:
-        print(f"      AJAX não carregou conteúdo dentro do paletaCadastro", flush=True)
-        return None
-    time.sleep(1)
-    return _parse_ies_detail(driver.page_source)
 
+def search_consulta_avancada(driver, name: str, timeout: float = 120) -> list[dict]:
+    """Submete o nome no formulário Consulta Avançada e devolve
+    [{codigo, nome, sigla, organizacao, categoria, municipio_uf}, ...].
 
-def fetch_by_name(driver, name: str, timeout: float = 120) -> list[dict]:
-    """Pesquisa o e-MEC pela aba 'Consulta Avançada' filtrando por Nome da IES
-    e retorna [{codigo, nome, sigla}, ...]."""
+    Limpa o filtro de situação para incluir IES extintas/unificadas. Sai
+    cedo se aparecer 'Nenhum registro encontrado!'."""
     from bs4 import BeautifulSoup
     from selenium.webdriver.common.by import By
-    from selenium.webdriver.support.ui import WebDriverWait
-    from selenium.webdriver.support import expected_conditions as EC
-    from selenium.common.exceptions import TimeoutException
 
-    driver.get("https://emec.mec.gov.br/emec/nova#avancada")
+    driver.get(EMEC_FORM)
     if not _wait_for_real_page(driver, (By.ID, "txt_no_ies"), timeout=timeout):
-        # tenta clicar no link da aba avançada (Cloudflare pode ter passado mas a aba não)
         try:
             link = driver.find_element(By.PARTIAL_LINK_TEXT, "Consulta Avançada")
             driver.execute_script("arguments[0].click();", link)
@@ -243,12 +185,7 @@ def fetch_by_name(driver, name: str, timeout: float = 120) -> list[dict]:
         if not _wait_for_real_page(driver, (By.ID, "txt_no_ies"), timeout=30):
             return []
 
-    # garante interatividade (campo deve estar visível e habilitado)
-    try:
-        WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.ID, "txt_no_ies")))
-    except TimeoutException:
-        return []
-
+    # Seleciona radio "IES"
     for radio in driver.find_elements(By.NAME, "data[CONSULTA_AVANCADA][rad_buscar_por]"):
         if (radio.get_attribute("value") or "").upper() == "IES":
             try:
@@ -257,9 +194,7 @@ def fetch_by_name(driver, name: str, timeout: float = 120) -> list[dict]:
                 pass
             break
 
-    # Limpa o filtro de situação (default 'Ativa' = 10035) para que IES
-    # extintas/unificadas também apareçam — código antigo da nossa base muitas
-    # vezes aponta para IES inativa.
+    # Inclui IES inativas no resultado
     try:
         driver.execute_script(
             "var s = document.getElementById('sel_co_situacao_funcionamento_ies');"
@@ -272,61 +207,60 @@ def fetch_by_name(driver, name: str, timeout: float = 120) -> list[dict]:
     name_input.clear()
     name_input.send_keys(name)
 
-    btn = driver.find_element(By.ID, "btnPesqAvancada")
-    driver.execute_script("arguments[0].click();", btn)
+    driver.execute_script(
+        "arguments[0].click();", driver.find_element(By.ID, "btnPesqAvancada")
+    )
 
-    # O AJAX devolve o resultado dentro de #div_listar_consulta_avancada.
-    # Esperamos por: linhas de resultado, OU mensagem 'Nenhum registro
-    # encontrado!' — o que vier primeiro.
-    deadline = time.time() + 60
-    no_results = False
-    found_rows = False
+    # Aguarda resultado ou mensagem 'Nenhum registro encontrado!'
+    deadline = time.time() + timeout
     while time.time() < deadline:
         try:
             src = driver.page_source
         except Exception:
             src = ""
         if "Nenhum registro encontrado" in src:
-            no_results = True
+            return []
+        if driver.find_elements(By.CSS_SELECTOR, "tr.linha_tr_body_nova_grid"):
             break
-        try:
-            rows = driver.find_elements(By.CSS_SELECTOR, "tr.linha_tr_body_nova_grid")
-            if rows:
-                found_rows = True
-                break
-        except Exception:
-            pass
         time.sleep(0.5)
-
-    if no_results or not found_rows:
+    else:
         return []
 
     soup = BeautifulSoup(driver.page_source, "html.parser")
     container = soup.find(id="div_listar_consulta_avancada")
     if not container:
         return []
-    results: list[dict] = []
+    results = []
     for tr in container.select("tr.linha_tr_body_nova_grid"):
-        text = tr.get_text(" ", strip=True)
-        parsed = _parse_label_value(text)
+        parsed = _parse_result_row(tr)
         if parsed:
             results.append(parsed)
     return results
 
 
-def pick_best_match(candidates: list[dict], our_name: str) -> dict | None:
-    """Escolhe o resultado com maior similaridade com nosso Nome da IES,
-    desde que passe o threshold mínimo."""
+def pick_match(candidates: list[dict], target_code: str, target_name: str) -> tuple[dict | None, str]:
+    """Escolhe o melhor candidato. Prioriza coincidência de código; depois
+    similaridade de nome acima do threshold. Devolve (candidato, match_type)."""
     if not candidates:
-        return None
+        return None, "not_found"
+    target_code = str(target_code).strip()
+    for c in candidates:
+        if c["codigo"] == target_code:
+            return c, "code_match"
     scored = sorted(
-        ((cand, _name_similarity(our_name, cand["nome"])) for cand in candidates),
+        ((c, _name_similarity(target_name, c["nome"])) for c in candidates),
         key=lambda x: x[1],
         reverse=True,
     )
     best, score = scored[0]
-    return best if score >= NAME_MATCH_THRESHOLD else None
+    if score >= NAME_MATCH_THRESHOLD:
+        return best, "name_match"
+    return None, "code_mismatch"
 
+
+# ---------------------------------------------------------------------------
+# Cache (Microdados/ies_siglas.csv)
+# ---------------------------------------------------------------------------
 
 def load_cache() -> dict[str, dict]:
     if not CACHE.exists():
@@ -337,11 +271,13 @@ def load_cache() -> dict[str, dict]:
 
 def save_cache(cache: dict[str, dict]) -> None:
     CACHE.parent.mkdir(parents=True, exist_ok=True)
+
     def sort_key(r):
         try:
             return (0, int(r["codigo_ies"]))
         except ValueError:
             return (1, r["codigo_ies"])
+
     with CACHE.open("w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=CACHE_FIELDS)
         writer.writeheader()
@@ -350,7 +286,6 @@ def save_cache(cache: dict[str, dict]) -> None:
 
 
 def needs_lookup(df: pd.DataFrame) -> pd.DataFrame:
-    """Retorna pares únicos (código, nome) cuja Sigla está vazia/0."""
     s = df["Sigla da IES"].astype("string").str.strip()
     mask = s.isna() | s.isin(["", "0", "0.0"])
     pairs = (
@@ -364,7 +299,13 @@ def needs_lookup(df: pd.DataFrame) -> pd.DataFrame:
     return pairs.reset_index(drop=True)
 
 
+# ---------------------------------------------------------------------------
+# Main loop
+# ---------------------------------------------------------------------------
+
 def main() -> None:
+    from selenium.common.exceptions import InvalidSessionIdException, WebDriverException
+
     df = pd.read_excel(INDICADORES, dtype={"Código da IES": str})
     pairs = needs_lookup(df)
     cache = load_cache()
@@ -373,11 +314,9 @@ def main() -> None:
         for _, row in pairs.iterrows()
         if row["Código da IES"] not in cache
     ]
-    print(f"{len(pairs)} IES sem sigla; {len(todo)} ainda não estão no cache.")
+    print(f"{len(pairs)} IES sem sigla; {len(todo)} ainda não estão no cache.", flush=True)
     if not todo:
         return
-
-    from selenium.common.exceptions import InvalidSessionIdException, WebDriverException
 
     driver = _start_browser()
     today = time.strftime("%Y-%m-%d")
@@ -402,38 +341,25 @@ def main() -> None:
     try:
         for i, (code, name) in enumerate(todo, 1):
             print(f"[{i}/{len(todo)}] code={code} name={name!r}", flush=True)
-            parsed = safe_call(fetch_by_code, code)
-            match_type = None
-            chosen = None
-            if parsed:
-                similarity = _name_similarity(name, parsed["nome"])
-                if similarity >= NAME_MATCH_THRESHOLD:
-                    chosen = parsed
-                    match_type = "code_match"
-                else:
-                    print(f"      code mismatch (sim={similarity:.2f}); trying name search...", flush=True)
+            candidates = safe_call(search_consulta_avancada, name) or []
+            chosen, match_type = pick_match(candidates, code, name)
+            if chosen:
+                print(
+                    f"      {match_type}: code={chosen['codigo']} sigla={chosen['sigla']!r} "
+                    f"org={chosen['organizacao']!r} cat={chosen['categoria']!r}",
+                    flush=True,
+                )
             else:
-                print(f"      code not found; trying name search...", flush=True)
+                print(f"      {match_type} ({len(candidates)} candidates)", flush=True)
 
-            if chosen is None:
-                candidates = safe_call(fetch_by_name, name) or []
-                best = pick_best_match(candidates, name)
-                if best:
-                    full = safe_call(fetch_by_code, best["codigo"])
-                    chosen = full or best
-                    match_type = "name_match"
-                    print(f"      name match: code={best['codigo']} sigla={chosen.get('sigla')!r}", flush=True)
-                else:
-                    match_type = "not_found" if not parsed else "code_mismatch"
-
-            picked = chosen or parsed or {}
+            picked = chosen or {}
             cache[code] = {
                 "codigo_ies": code,
                 "sigla": picked.get("sigla") or "",
                 "nome_emec": picked.get("nome") or "",
                 "organizacao_emec": picked.get("organizacao") or "",
                 "categoria_emec": picked.get("categoria") or "",
-                "match_type": match_type or "not_found",
+                "match_type": match_type,
                 "fetched_at": today,
             }
             if i % 10 == 0:
@@ -441,7 +367,10 @@ def main() -> None:
             time.sleep(1)
     finally:
         save_cache(cache)
-        driver.quit()
+        try:
+            driver.quit()
+        except Exception:
+            pass
 
 
 if __name__ == "__main__":
