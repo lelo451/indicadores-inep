@@ -501,6 +501,13 @@ def main() -> None:
             courses[c] = pd.NA
     courses = courses[TARGETS]
 
+    print("\nDropping footnote/header garbage rows...")
+    before = len(courses)
+    valid_ano = courses["Ano"].astype("string").str.fullmatch(r"\s*(?:19|20)\d{2}\s*")
+    valid_ies = courses["Código da IES"].astype("string").str.fullmatch(r"\s*\d+\s*")
+    courses = courses[valid_ano.fillna(False) & valid_ies.fillna(False)].reset_index(drop=True)
+    print(f"  dropped {before - len(courses)} rows")
+
     print("\nFilling Código do Município from name + UF where missing...")
     courses = fill_municipio_code(courses)
 
