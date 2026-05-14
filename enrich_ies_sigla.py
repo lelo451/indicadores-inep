@@ -432,39 +432,39 @@ def main() -> None:
         """Executa fn(driver, ...) com recuperação automática.
 
         - SearchStuckError (sintoma do usuário: a tabela de resultados sumiu e
-          clicar 'Pesquisar' não atualiza nada): recarrega a página e tenta de
-          novo até `max_reloads`. Se ainda assim travar, reinicia o navegador
-          até `max_restarts` vezes antes de desistir desta IES.
+          clicar 'Pesquisar' não atualiza nada): atualiza a página (refresh) e
+          tenta de novo até `max_refreshes`. Se ainda assim travar, reinicia o
+          navegador até `max_restarts` vezes antes de desistir desta IES.
         - InvalidSessionIdException / WebDriverException (navegador morreu):
           reinicia o navegador e tenta uma vez.
         """
         nonlocal driver
-        max_reloads = 3
+        max_refreshes = 3
         max_restarts = 2
-        reloads = 0
+        refreshes = 0
         restarts = 0
         while True:
             try:
                 return fn(driver, *args, **kwargs)
             except SearchStuckError as exc:
-                if reloads < max_reloads:
-                    reloads += 1
+                if refreshes < max_refreshes:
+                    refreshes += 1
                     print(
-                        f"      página travou ({exc}); recarregando "
-                        f"[reload {reloads}/{max_reloads}]...",
+                        f"      página travou ({exc}); atualizando "
+                        f"[refresh {refreshes}/{max_refreshes}]...",
                         flush=True,
                     )
                     try:
-                        driver.get(EMEC_FORM)
+                        driver.refresh()
                     except Exception:
                         pass
                     time.sleep(3)
                     continue
                 if restarts < max_restarts:
                     restarts += 1
-                    reloads = 0
+                    refreshes = 0
                     print(
-                        f"      reloads esgotados; reiniciando navegador "
+                        f"      refreshes esgotados; reiniciando navegador "
                         f"[restart {restarts}/{max_restarts}]...",
                         flush=True,
                     )
@@ -474,7 +474,7 @@ def main() -> None:
                         pass
                     driver = _start_browser()
                     continue
-                print("      desistindo desta IES após reloads e restarts.", flush=True)
+                print("      desistindo desta IES após refreshes e restarts.", flush=True)
                 return None
             except (InvalidSessionIdException, WebDriverException) as exc:
                 print(f"      browser died ({type(exc).__name__}); restarting...", flush=True)
