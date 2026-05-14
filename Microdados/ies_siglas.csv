@@ -1,17 +1,224 @@
 codigo_ies,sigla,nome_emec,organizacao_emec,categoria_emec,match_type,fetched_at
+1,UFMT,UNIVERSIDADE FEDERAL DE MATO GROSSO,Universidade,Pública Federal,code_match,2026-05-13
+2,UNB,UNIVERSIDADE DE BRASÍLIA,Universidade,Pública Federal,code_match,2026-05-13
+3,UFS,UNIVERSIDADE FEDERAL DE SERGIPE,Universidade,Pública Federal,code_match,2026-05-13
+4,UFAM,UNIVERSIDADE FEDERAL DO AMAZONAS,Universidade,Pública Federal,code_match,2026-05-13
+5,UFPI,UNIVERSIDADE FEDERAL DO PIAUÍ,Universidade,Pública Federal,code_match,2026-05-13
+6,UFOP,UNIVERSIDADE FEDERAL DE OURO PRETO,Universidade,Pública Federal,code_match,2026-05-13
+7,UFSCAR,UNIVERSIDADE FEDERAL DE SÃO CARLOS,Universidade,Pública Federal,code_match,2026-05-13
+8,UFV,UNIVERSIDADE FEDERAL DE VIÇOSA,Universidade,Pública Federal,code_match,2026-05-13
+9,UEL,UNIVERSIDADE ESTADUAL DE LONDRINA,Universidade,Pública Estadual,code_match,2026-05-13
+10,PUCPR,PONTIFÍCIA UNIVERSIDADE CATÓLICA DO PARANÁ,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+11,UNICAP,UNIVERSIDADE CATÓLICA DE PERNAMBUCO,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+12,FURG,UNIVERSIDADE FEDERAL DO RIO GRANDE,Universidade,Pública Federal,code_match,2026-05-13
+13,UCS,UNIVERSIDADE DE CAXIAS DO SUL,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+14,UNISINOS,UNIVERSIDADE DO VALE DO RIO DOS SINOS,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+15,UCP,UNIVERSIDADE CATÓLICA DE PETRÓPOLIS,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+16,,,,,not_found,2026-05-13
+17,UFU,UNIVERSIDADE FEDERAL DE UBERLÂNDIA,Universidade,Pública Federal,code_match,2026-05-13
+18,UCPEL,UNIVERSIDADE CATÓLICA DE PELOTAS,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+19,PUC-CAMPINAS,PONTIFÍCIA UNIVERSIDADE CATÓLICA DE CAMPINAS,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+20,UPF,UNIVERSIDADE DE PASSO FUNDO,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+21,PUCRS,PONTIFÍCIA UNIVERSIDADE CATÓLICA DO RIO GRANDE DO SUL,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+22,MACKENZIE,UNIVERSIDADE PRESBITERIANA MACKENZIE,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+23,FEEVALE,UNIVERSIDADE FEEVALE,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+24,UESC,UNIVERSIDADE ESTADUAL DE SANTA CRUZ,Universidade,Pública Estadual,code_match,2026-05-13
+26,ENCE,ESCOLA NACIONAL DE CIÊNCIAS ESTATÍSTICAS,Faculdade,Pública Federal,code_match,2026-05-13
+27,UninCor,Centro Universitário UninCor,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+29,UECE,UNIVERSIDADE ESTADUAL DO CEARÁ,Universidade,Pública Estadual,code_match,2026-05-13
+30,UNIFENAS,UNIVERSIDADE PROFESSOR EDSON ANTÔNIO VELANO,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+32,UNCISAL,UNIVERSIDADE ESTADUAL DE CIÊNCIAS DA SAÚDE DE ALAGOAS - UNCISAL,Universidade,Pública Estadual,code_match,2026-05-13
+33,FATEC SO,FACULDADE DE TECNOLOGIA DE SOROCABA,Faculdade,Pública Estadual,code_match,2026-05-13
+34,FATEC-SP,FACULDADE DE TECNOLOGIA DE SÃO PAULO,Faculdade,Pública Estadual,code_match,2026-05-13
+35,FATEC-AM,FACULDADE DE TECNOLOGIA DE AMERICANA,Faculdade,Pública Estadual,code_match,2026-05-13
+36,FATEC-BS,FACULDADE DE TECNOLOGIA RUBENS LARA,Faculdade,Pública Estadual,code_match,2026-05-13
+37,FATEC-JAHU,FACULDADE DE TECNOLOGIA DE JAHU,Faculdade,Pública Estadual,code_match,2026-05-13
+38,UEPA,UNIVERSIDADE DO ESTADO DO PARÁ,Universidade,Pública Estadual,code_match,2026-05-13
+40,UNEB,UNIVERSIDADE DO ESTADO DA BAHIA,Universidade,Pública Estadual,code_match,2026-05-13
+41,,,,,not_found,2026-05-13
+42,,,,,not_found,2026-05-13
+43,UDESC,FUNDAÇÃO UNIVERSIDADE DO ESTADO DE SANTA CATARINA,Universidade,Pública Estadual,code_match,2026-05-13
+46,,,,,not_found,2026-05-13
+47,UEG,UNIVERSIDADE ESTADUAL DE GOIÁS,Universidade,Pública Estadual,code_match,2026-05-13
+54,UNICAMP,UNIVERSIDADE ESTADUAL DE CAMPINAS,Universidade,Pública Estadual,code_match,2026-05-13
+56,UNESP,UNIVERSIDADE ESTADUAL PAULISTA JÚLIO DE MESQUITA FILHO,Universidade,Pública Estadual,code_match,2026-05-13
+57,UEM,UNIVERSIDADE ESTADUAL DE MARINGÁ,Universidade,Pública Estadual,code_match,2026-05-13
+58,FDSBC,FACULDADE DE DIREITO DE SÃO BERNARDO DO CAMPO,Faculdade,Especial,code_match,2026-05-13
+59,FDF,FACULDADE DE DIREITO DE FRANCA,Faculdade,Pública Municipal,code_match,2026-05-13
+60,UNI-FACEF,CENTRO UNIVERSITÁRIO MUNICIPAL DE FRANCA,Centro Universitário,Especial,code_match,2026-05-13
+67,EEP/FUMEP,ESCOLA DE ENGENHARIA DE PIRACICABA,Faculdade,Pública Municipal,code_match,2026-05-13
+68,FAFIPE,FACULDADE DE FILOSOFIA CIÊNCIAS E LETRAS DE PENÁPOLIS,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+71,UERN,UNIVERSIDADE DO ESTADO DO RIO GRANDE DO NORTE,Universidade,Pública Estadual,code_match,2026-05-13
+72,FAMASUL,FACULDADE DE FORMAÇÃO DE PROFESSORES DA MATA SUL,Faculdade,Especial,code_match,2026-05-13
+73,CESA,CENTRO DE ENSINO SUPERIOR DE ARCOVERDE,Faculdade,Especial,code_match,2026-05-13
+74,FFCL,FACULDADE DE FILOSOFIA CIÊNCIAS E LETRAS DE SÃO JOSÉ DO RIO PARDO,Faculdade,Pública Municipal,code_match,2026-05-13
+75,,,,,not_found,2026-05-13
+76,FURB,UNIVERSIDADE REGIONAL DE BLUMENAU,Universidade,Especial,code_match,2026-05-13
+77,FERLAGOS,FACULDADE DA REGIÃO DOS LAGOS,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+78,FAFIA,FACULDADE DE FILOSOFIA CIÊNCIAS E LETRAS DE ALEGRE,Faculdade,Pública Municipal,code_match,2026-05-13
+79,IMES CATANDUVA,INSTITUTO MUNICIPAL DE ENSINO SUPERIOR DE CATANDUVA,Faculdade,Pública Municipal,code_match,2026-05-13
+80,UNIDAVI,CENTRO UNIVERSITÁRIO PARA O DESENVOLVIMENTO DO ALTO VALE DO ITAJAÍ,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+81,UNIVILLE,UNIVERSIDADE DA REGIÃO DE JOINVILLE,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+82,UNOESC,UNIVERSIDADE DO OESTE DE SANTA CATARINA,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+83,UNIVALI,UNIVERSIDADE DO VALE DO ITAJAÍ,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+84,,,,,not_found,2026-05-13
+87,UNIFEBE,CENTRO UNIVERSITÁRIO DE BRUSQUE,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+88,,,,,not_found,2026-05-13
+89,,,,,not_found,2026-05-13
+93,FMJ,FACULDADE DE MEDICINA DE JUNDIAÍ,Faculdade,Pública Municipal,code_match,2026-05-13
+94,ESEFJ,ESCOLA SUPERIOR DE EDUCAÇÃO FÍSICA DE JUNDIAÍ,Faculdade,Pública Municipal,code_match,2026-05-13
+95,UVA,UNIVERSIDADE ESTADUAL VALE DO ACARAÚ,Universidade,Pública Estadual,code_match,2026-05-13
+99,FDCL,FACULDADE DE DIREITO DE CONSELHEIRO LAFAIETE,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+107,UFSJ,UNIVERSIDADE FEDERAL DE SÃO JOÃO DEL REI,Universidade,Pública Federal,code_match,2026-05-13
+109,FIRB,FACULDADES INTEGRADAS RUI BARBOSA,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+124,UNIARA,UNIVERSIDADE DE ARARAQUARA,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+125,UNAR,CENTRO UNIVERSITÁRIO DE ARARAS,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+126,INATEL,INSTITUTO NACIONAL DE TELECOMUNICAÇÕES,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
 129,,,,,not_found,2026-05-13
 130,,,,,not_found,2026-05-13
+131,,,,,not_found,2026-05-13
+135,CLARETIANOBT,Claretiano - Centro Universitário,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+137,UNISAGRADO,CENTRO UNIVERSITÁRIO SAGRADO CORAÇÃO,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+138,CBM,CENTRO UNIVERSITÁRIO BARÃO DE MAUÁ,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+139,,,,,not_found,2026-05-13
+140,UNIVASSOURAS,UNIVERSIDADE DE VASSOURAS,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+141,FADIVA,FACULDADE DE DIREITO DE VARGINHA - FADIVA,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+142,UNITRI,CENTRO UNIVERSITÁRIO DO TRIÂNGULO,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+143,UNIUBE,UNIVERSIDADE DE UBERABA,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+144,FACHO,FACULDADE DE CIÊNCIAS HUMANAS DE OLINDA,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+145,FACX,FACULDADE DE CIÊNCIAS HUMANAS E SOCIAIS DO XINGU E AMAZÔNIA,Faculdade,Privada sem fins lucrativos,name_match,2026-05-13
+146,UNIRP,CENTRO UNIVERSITÁRIO DE RIO PRETO,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-13
+149,FAMERP,FACULDADE DE MEDICINA DE SÃO JOSÉ DO RIO PRETO,Faculdade,Pública Estadual,code_match,2026-05-13
+150,UNISO,UNIVERSIDADE DE SOROCABA,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+151,FGV-EAESP,ESCOLA DE ADMINISTRAÇÃO DE EMPRESAS DE SÃO PAULO - FGV EAESP,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+152,FACIC,FACULDADE DE CIÊNCIAS CONTÁBEIS,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+158,CBM-UniCBE,CONSERVATÓRIO BRASILEIRO DE MÚSICA - CENTRO UNIVERSITÁRIO BRASILEIRO DE EDUCAÇÃO,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+159,FNR CARUARU,FACULDADE NOVA ROMA CARUARU,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+160,UniFAFIRE,Centro Universitário Frassinetti do Recife,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+161,-,CENTRO UNIVERSITÁRIO ASSUNÇÃO,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+162,FEBASP,CENTRO UNIVERSITÁRIO BELAS ARTES DE SÃO PAULO,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-13
+163,UNESA,UNIVERSIDADE ESTÁCIO DE SÁ,Universidade,Privada com fins lucrativos,code_match,2026-05-13
+165,UVA,UNIVERSIDADE VEIGA DE ALMEIDA,Universidade,Privada com fins lucrativos,code_match,2026-05-13
 166,-,"FAI - CENTRO DE ENSINO SUPERIOR EM GESTÃO, TECNOLOGIA E EDUCAÇÃO",Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+167,UMESP,UNIVERSIDADE METODISTA DE SÃO PAULO,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+170,-,FUNVIC - FACULDADE FUNVIC DE MOCOCA,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+171,FDSM,FACULDADE DE DIREITO DO SUL DE MINAS,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+176,UCB,UNIVERSIDADE CASTELO BRANCO,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+180,,,,,not_found,2026-05-13
+181,,,,,not_found,2026-05-13
+190,,,,,not_found,2026-05-13
+191,,,,,not_found,2026-05-13
+192,FSM,FACULDADE SOUZA MARQUES,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+193,,,,,not_found,2026-05-13
+194,,,,,not_found,2026-05-13
 195,-,FACULDADE PRESBITERIANA MACKENZIE RIO,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+197,FESPPR,FACULDADE DE EDUCAÇÃO SUPERIOR DO PARANÁ,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+198,,,,,not_found,2026-05-13
+199,,,,,not_found,2026-05-13
+200,FCL,FACULDADE CÁSPER LÍBERO,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+201,,,,,not_found,2026-05-13
 202,-,FACULDADE DO RIO DE JANEIRO,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+203,USJT,UNIVERSIDADE SÃO JUDAS TADEU,Universidade,Privada com fins lucrativos,code_match,2026-05-13
+206,UNIÍTALO,Centro Universitário Católico Ítalo Brasileiro,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+207,CUML,CENTRO UNIVERSITÁRIO MOURA LACERDA,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+208,UNAERP,UNIVERSIDADE DE RIBEIRÃO PRETO,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+213,FECAP,CENTRO UNIVERSITÁRIO ÁLVARES PENTEADO,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+214,FEAMIG,FACULDADE DE ENGENHARIA DE MINAS GERAIS - FEAMIG,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+215,,,,,not_found,2026-05-13
+216,UNIDOM,Centro Universitário Dom Helder,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+217,UNIFAE,CENTRO UNIVERSITÁRIO DAS FACULDADES ASSOCIADAS DE ENSINO - FAE,Centro Universitário,Especial,code_match,2026-05-13
+218,,,,,not_found,2026-05-13
+219,FAECA DOM BOSCO,FACULDADE DE EDUCAÇÃO CIÊNCIAS E ARTES DOM BOSCO DE MONTE APRAZÍVEL Em supervisão - Procedimento Sancionador: Portaria N. 275/2024 - Procedimento Sancionador,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+220,FSJT,FACULDADE SÃO JUDAS TADEU,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+221,UNICSUL,UNIVERSIDADE CRUZEIRO DO SUL,Universidade,Privada com fins lucrativos,code_match,2026-05-13
+222,UNIFEV,CENTRO UNIVERSITÁRIO DE VOTUPORANGA,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+224,FMABC,Centro Universitário FMABC,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
 225,,,,,not_found,2026-05-13
+226,UNILUS,CENTRO UNIVERSITÁRIO LUSÍADA,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+227,UNISANTOS,UNIVERSIDADE CATÓLICA DE SANTOS,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+231,FASB,FACULDADE DE SÃO BERNARDO DO CAMPO,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+234,FOC,FACULDADES OSWALDO CRUZ,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+240,USU,UNIVERSIDADE SANTA ÚRSULA,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+242,-,CENTRO UNIVERSITÁRIO ANHANGUERA PITÁGORAS AMPLI,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-13
+243,FCNM,FACULDADE DO CLUBE NÁUTICO MOGIANO,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+244,UNIFIEO,CENTRO UNIVERSITÁRIO FIEO,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+245,FAAL,FACULDADE DE ADMINISTRAÇÃO E ARTES DE LIMEIRA,Faculdade,Privada com fins lucrativos,name_match,2026-05-13
 254,UNI-BAN,CENTRO UNIVERSITÁRIO UNI-BAN,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-13
+255,,,,,not_found,2026-05-13
+256,,,,,not_found,2026-05-13
+257,,,,,not_found,2026-05-13
+263,FICS,FACULDADES INTEGRADAS CAMPOS SALLES,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+264,,,,,not_found,2026-05-13
+265,Unifio,CENTRO UNIVERSITÁRIO DAS FACULDADES INTEGRADAS DE OURINHOS,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+266,UNIMEP,UNIVERSIDADE METODISTA DE PIRACICABA,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
 267,-,CENTRO UNIVERSITÁRIO ESPÍRITO-SANTENSE/FAESA,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+268,,,,,not_found,2026-05-13
+269,FACCAT,FACULDADE FACCAT,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
 270,,,,,not_found,2026-05-13
+271,UNOESTE,UNIVERSIDADE DO OESTE PAULISTA,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+275,UNIVAP,UNIVERSIDADE DO VALE DO PARAÍBA,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+276,FADI,FACULDADE DE DIREITO DE SOROCABA,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+277,UNISUAM,CENTRO UNIVERSITÁRIO AUGUSTO MOTTA,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+278,FIS,"FACULDADES INTEGRADAS SIMONSEN Suspensão contrato FIES: Não preenchimento do último Censo, Art. 2º e 4º da Portaria 794/2013. , Portaria N. 468/2025 - DOU 16/07/2025, SEI 23000.045436/2024-17 Em supervisão - Procedimento Sancionador: Portaria N. 49/2026 - DOU 18/02/2026 Suspensão de Ingresso: Portaria N. 49/2026 - DOU 18/02/2026 Suspensão de ingresso nos cursos de especialização Lato Sensu : Portaria N. 49/2026 - DOU 18/02/2026",Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+279,Unifacha,Centro Universitário Hélio Alonso,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+281,,,,,not_found,2026-05-13
+283,,,,,not_found,2026-05-13
+284,Afya Itajubá,Afya Faculdade de Medicina de Itajubá,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+288,FADIVALE,FACULDADE DE DIREITO DO VALE DO RIO DOCE,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
 290,,,,,not_found,2026-05-13
 291,,,,,not_found,2026-05-13
+292,,,,,not_found,2026-05-13
+294,SETREM,FACULDADE TRÊS DE MAIO,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+295,UNISC,UNIVERSIDADE DE SANTA CRUZ DO SUL,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
 296,-,Centro Universitário da Região da Campanha,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+297,,,,,not_found,2026-05-13
+298,Unopar,Universidade Pitágoras Unopar Anhanguera,Universidade,Privada com fins lucrativos,code_match,2026-05-13
+299,FAFIJAN,FACULDADE DE JANDAIA DO SUL Em supervisão - Procedimento Sancionador: Portaria N. 113/2026,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+302,,,,,not_found,2026-05-13
+307,FAME,FACULDADE DE MEDICINA DE BARBACENA,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+308,UNIPAC,CENTRO UNIVERSITÁRIO PRESIDENTE ANTÔNIO CARLOS,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+316,UNINOVE,UNIVERSIDADE NOVE DE JULHO,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+319,UB,UNIVERSIDADE BRASIL,Universidade,Privada com fins lucrativos,code_match,2026-05-13
+320,,,,,not_found,2026-05-13
+321,,,,,not_found,2026-05-13
+322,UNIP,UNIVERSIDADE PAULISTA,Universidade,Privada com fins lucrativos,code_match,2026-05-13
+329,,,,,not_found,2026-05-13
+330,UNIG,UNIVERSIDADE IGUAÇU,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+336,,,,,not_found,2026-05-13
+337,Uniacademia,Centro Universitário Academia,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+338,PUC MINAS,PONTIFÍCIA UNIVERSIDADE CATÓLICA DE MINAS GERAIS,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
 339,,,,,not_found,2026-05-13
+343,NEWTON PAIVA WYDEN,CENTRO UNIVERSITÁRIO NEWTON PAIVA WYDEN,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-13
+344,UNA,CENTRO UNIVERSITÁRIO UNA,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-13
+345,EEK,ESCOLA DE ENGENHARIA KENNEDY,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+346,ISCA,INSTITUTO SUPERIOR DE CIÊNCIAS APLICADAS - ISCA,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+349,UNI-BH,CENTRO UNIVERSITÁRIO DE BELO HORIZONTE,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-13
+351,FCMMG,FACULDADE DE CIÊNCIAS MÉDICAS DE MINAS GERAIS,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+352,UNIPÊ,CENTRO UNIVERSITÁRIO DE JOÃO PESSOA,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-13
+353,FEMPAR,FACULDADE EVANGÉLICA MACKENZIE DO PARANÁ,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+355,UTP,UNIVERSIDADE TUIUTI DO PARANÁ,Universidade,Privada com fins lucrativos,code_match,2026-05-13
+359,,,,,not_found,2026-05-13
+360,UNIPAULISTANA,Centro Universitário Paulistana,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-13
+361,FAPSS,Faculdade Paulista de Serviço Social de São Caetano do Sul,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+362,Primum,Faculdade Primum,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+363,FAMOSP,"FACULDADE MOZARTEUM DE SÃO PAULO Em supervisão - Procedimento Sancionador sem Medida Cautelar: Portaria nº 645/2020, publicada no Diário Oficial da União - DOU em 31/12/2020, art. 1º, art. 2º.",Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+364,,,,,not_found,2026-05-13
+367,UNIMONTES,UNIVERSIDADE ESTADUAL DE MONTES CLAROS,Universidade,Pública Estadual,code_match,2026-05-13
+368,FEFISO,FACULDADE DE EDUCAÇÃO FÍSICA DA ASSOCIAÇÃO CRISTÃ DE MOÇOS DE SOROCABA,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+370,FPA,FACULDADE PAULISTA DE ARTES,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+371,FMCG,FACULDADE DE MÚSICA CARLOS GOMES,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+372,,,,,not_found,2026-05-13
+373,ESP,ESCOLA DE SOCIOLOGIA E POLÍTICA DE SÃO PAULO,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+374,FMU,CENTRO UNIVERSITÁRIO DAS FACULDADES METROPOLITANAS UNIDAS Em Supervisão - Procedimento Saneador sem Medida Cautelar: Portaria N. 832/2022,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-13
+375,UNISA,UNIVERSIDADE SANTO AMARO,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+376,Anhanguera SP,CENTRO UNIVERSITÁRIO ANHANGUERA DE SÃO PAULO,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-13
+383,UNAMA,UNIVERSIDADE DA AMAZÔNIA,Universidade,Privada com fins lucrativos,code_match,2026-05-13
+384,UniEVANGÉLICA,Universidade Evangélica de Goiás,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+385,UNIFACS,UNIVERSIDADE SALVADOR,Universidade,Privada com fins lucrativos,code_match,2026-05-13
+386,UNIGOIÁS,CENTRO UNIVERSITÁRIO DE GOIÁS,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-13
+387,UCDB,UNIVERSIDADE CATÓLICA DOM BOSCO,Universidade,Privada sem fins lucrativos,code_match,2026-05-13
+390,,,,,not_found,2026-05-13
+395,,,,,not_found,2026-05-13
 413,,,,,not_found,2026-05-13
 414,,,,,not_found,2026-05-13
 487,,,,,not_found,2026-05-13

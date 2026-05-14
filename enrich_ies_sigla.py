@@ -18,18 +18,25 @@ código da nossa base aparece entre os candidatos, usamos esse registro
 Resultados ficam em Microdados/ies_siglas.csv e o consolidador os usa
 em fill_sigla_from_cache / fill_org_categ_from_cache.
 
+Fontes de IES (em ordem de prioridade):
+1. list_ies.csv (uma coluna 'codigo_ies') — usa todos os códigos.
+2. Caso contrário, IES com 'Sigla da IES' faltando em indicadores_consolidados.xlsx.
+
 Requisitos:
-- undetected-chromedriver (pip install undetected-chromedriver)
-- Chrome real em /usr/bin/google-chrome
-- DISPLAY disponível (Cloudflare bloqueia modo headless)
+- undetected-chromedriver (pip install undetected-chromedriver selenium beautifulsoup4)
+- Chrome instalado (auto-detectado em Linux: /usr/bin/google-chrome[-stable] ou
+  /usr/bin/chromium; Windows: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe').
+- Em Linux: DISPLAY disponível (Cloudflare bloqueia modo headless).
 """
 
 from __future__ import annotations
 
+import argparse
 import base64
 import csv
 import os
 import re
+import sys
 import time
 import unicodedata
 from pathlib import Path
@@ -98,6 +105,32 @@ def _name_similarity(a: str, b: str) -> float:
 # Selenium helpers (Chrome + Cloudflare)
 # ---------------------------------------------------------------------------
 
+def _find_chrome_executable() -> str | None:
+    """Localiza o executável do Chrome no SO atual. Retorna None se nenhum
+    caminho conhecido existir — undetected-chromedriver tenta auto-detectar."""
+    if sys.platform == "win32":
+        candidates = [
+            r"C:\Program Files\Google\Chrome\Application\chrome.exe",
+            r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
+            os.path.expandvars(r"%LOCALAPPDATA%\Google\Chrome\Application\chrome.exe"),
+        ]
+    elif sys.platform == "darwin":
+        candidates = [
+            "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+        ]
+    else:
+        candidates = [
+            "/usr/bin/google-chrome",
+            "/usr/bin/google-chrome-stable",
+            "/usr/bin/chromium",
+            "/usr/bin/chromium-browser",
+        ]
+    for path in candidates:
+        if path and os.path.exists(path):
+            return path
+    return None
+
+
 def _start_browser():
     import undetected_chromedriver as uc
 
@@ -107,7 +140,7 @@ def _start_browser():
     opts.add_argument("--window-size=1280,800")
     return uc.Chrome(
         options=opts,
-        browser_executable_path="/usr/bin/google-chrome",
+        browser_executable_path=_find_chrome_executable(),
         version_main=None,
     )
 
@@ -194,7 +227,7 @@ def search_consulta_avancada(driver, name: str, timeout: float = 120) -> list[di
     from selenium.webdriver.common.by import By
 
     # Pequena pausa antes de cada busca para não bater no e-MEC em rajada.
-    time.sleep(0.5)
+    time.sleep(1)
 
     driver.get(EMEC_FORM)
     if not _wait_for_real_page(driver, (By.ID, "txt_no_ies"), timeout=timeout):
@@ -320,6 +353,37 @@ def needs_lookup(df: pd.DataFrame) -> pd.DataFrame:
     return pairs.reset_index(drop=True)
 
 
+LIST_IES_CSV = DATA_ROOT / "list_ies.csv"
+
+
+def _name_lookup(df: pd.DataFrame) -> dict[str, str]:
+    """Mapa código->nome a partir do consolidado; usado como fallback de busca
+    por nome quando a busca por código falha."""
+    tmp = df.dropna(subset=["Código da IES"]).copy()
+    tmp["Código da IES"] = tmp["Código da IES"].astype(str).str.strip()
+    tmp = tmp[tmp["Código da IES"].str.match(r"^\d+$", na=False)]
+    tmp = tmp.drop_duplicates(subset=["Código da IES"])
+    if "Nome da IES" not in tmp.columns:
+        return {}
+    return dict(zip(tmp["Código da IES"], tmp["Nome da IES"].fillna("")))
+
+
+def load_targets() -> list[tuple[str, str]]:
+    """Lista [(codigo, nome), ...] de IES a buscar.
+
+    Se existir list_ies.csv (coluna 'codigo_ies'), retorna todos os códigos
+    de lá, com o nome buscado em indicadores_consolidados.xlsx quando houver.
+    Caso contrário, cai no comportamento original: só IES com sigla faltando."""
+    df = pd.read_excel(INDICADORES, dtype={"Código da IES": str})
+    names = _name_lookup(df)
+    if LIST_IES_CSV.exists():
+        codes = pd.read_csv(LIST_IES_CSV, dtype=str)["codigo_ies"].astype(str).str.strip()
+        codes = codes[codes.str.match(r"^\d+$", na=False)]
+        return [(c, names.get(c, "")) for c in codes]
+    pairs = needs_lookup(df)
+    return list(zip(pairs["Código da IES"], pairs["Nome da IES"].fillna("")))
+
+
 # ---------------------------------------------------------------------------
 # Main loop
 # ---------------------------------------------------------------------------
@@ -327,15 +391,26 @@ def needs_lookup(df: pd.DataFrame) -> pd.DataFrame:
 def main() -> None:
     from selenium.common.exceptions import InvalidSessionIdException, WebDriverException
 
-    df = pd.read_excel(INDICADORES, dtype={"Código da IES": str})
-    pairs = needs_lookup(df)
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--limit", type=int, default=None,
+        help="Processa no máximo N IES (útil para teste de fumaça).",
+    )
+    args = parser.parse_args()
+
+    targets = load_targets()
     cache = load_cache()
-    todo = [
-        (row["Código da IES"], row["Nome da IES"])
-        for _, row in pairs.iterrows()
-        if row["Código da IES"] not in cache
-    ]
-    print(f"{len(pairs)} IES sem sigla; {len(todo)} ainda não estão no cache.", flush=True)
+    in_cache = sum(1 for code, _ in targets if code in cache)
+    todo = [(code, name) for code, name in targets if code not in cache]
+    source = "list_ies.csv" if LIST_IES_CSV.exists() else "indicadores (sigla faltando)"
+    print(
+        f"Fonte: {source}. {len(targets)} IES alvo; {in_cache} já em "
+        f"{CACHE.name} (pulando); {len(todo)} a buscar no e-MEC.",
+        flush=True,
+    )
+    if args.limit is not None:
+        todo = todo[: args.limit]
+        print(f"--limit aplicado: processando {len(todo)} IES.", flush=True)
     if not todo:
         return
 
