@@ -2746,75 +2746,388 @@ Local: Associação Centro Evangélico de educação, Cultura e Assistência Soc
 15449,,,,,not_found,2026-05-14
 15450,Uniúnica,Centro Universitário Única,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-14
 15451,FADIPA,Faculdade de Direito de Ipatinga,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+15452,UNA,CENTRO UNIVERSITÁRIO UNA DE BOM DESPACHO,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-14
 15453,-,Faculdade Presidente Antônio Carlos de Conselheiro Lafaiete,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
 15467,-,Faculdade Presidente Antônio Carlos de Visconde do Rio Branco,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
 15468,-,Faculdade Presidente Antônio Carlos de Leopoldina,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+15497,UNILAB,UNIVERSIDADE DA INTEGRAÇÃO INTERNACIONAL DA LUSOFONIA AFRO-BRASILEIRA,Universidade,Pública Federal,code_match,2026-05-14
+15504,FAI,FACULDADE IRECÊ,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+15507,IFAC,"Instituto Federal de Educação, Ciência e Tecnologia do Acre","Instituto Federal de Educação, Ciência e Tecnologia",Pública Federal,code_match,2026-05-14
+15508,CEUPI,Centro de Ensino Unificado do Piauí,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+15520,IFMS,"INSTITUTO FEDERAL DE EDUCAÇÃO, CIÊNCIA E TECNOLOGIA DE MATO GROSSO DO SUL","Instituto Federal de Educação, Ciência e Tecnologia",Pública Federal,code_match,2026-05-14
+15521,,,,,not_found,2026-05-14
+15522,IFAP,"INSTITUTO FEDERAL DE EDUCAÇÃO, CIÊNCIA E TECNOLOGIA DO AMAPÁ","Instituto Federal de Educação, Ciência e Tecnologia",Pública Federal,code_match,2026-05-14
+15526,F.CEARÁ,FACULDADE UNIRB CEARÁ,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+15562,FBC,Faculdade Batista do Cariri,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+15576,FATEC-MC,Faculdade de Tecnologia de Mogi das Cruzes,Faculdade,Pública Estadual,code_match,2026-05-14
+15581,FATECSJCAMPOS,Faculdade de Tecnologia de São José dos Campos - Jessen Vidal,Faculdade,Pública Estadual,code_match,2026-05-14
+15639,Fatec Itaqua,Faculdade de Tecnologia de Itaquaquecetuba,Faculdade,Pública Estadual,code_match,2026-05-14
+15669,,,,,not_found,2026-05-14
 15680,-,Fatec Cruzeiro - Prof. Waldomiro May,Faculdade,Pública Estadual,code_match,2026-05-13
+15682,Fatec Piracicaba,Faculdade de Tecnologia de Piracicaba,Faculdade,Pública Estadual,code_match,2026-05-14
+15688,FATEC ZONASUL,FACULDADE DE TECONOLOGIA DA ZONA SUL,Faculdade,Pública Estadual,code_match,2026-05-14
+15689,FATEC,Faculdade de Tecnologia de Bauru,Faculdade,Pública Estadual,code_match,2026-05-14
+15693,Fatec - Itapetininga,Faculdade de Tecnologia de Itapetininga - Prof.Antônio Belizandro Barbosa Rezende,Faculdade,Pública Estadual,code_match,2026-05-14
+15695,Fatec Itu,Faculdade de Tecnologia Dom Amaury Castanho,Faculdade,Pública Estadual,code_match,2026-05-14
+15696,FATEC SERTÃOZINHO,Faculdade de Tecnologia de Sertãozinho,Faculdade,Pública Estadual,code_match,2026-05-14
+15697,FATEC Araçatuba,Faculdade de Tecnologia de Araçatuba,Faculdade,Pública Estadual,code_match,2026-05-14
+15708,FATEC Franca,Faculdade de Tecnologia Dr. Thomaz Novelino,Faculdade,Pública Estadual,code_match,2026-05-14
+15709,Fatec Osasco,Faculdade de Tecnologia de Osasco - Prefeito Hirant Sanazar,Faculdade,Pública Estadual,code_match,2026-05-14
+15714,FATECMM,Fatec Arthur Azevedo - Mogi Mirim,Faculdade,Pública Estadual,code_match,2026-05-14
+15715,FATEC LINS,FACULDADE DE TECNOLOGIA PROFESSOR ANTÔNIO SEABRA,Faculdade,Pública Estadual,code_match,2026-05-14
+15745,FATEC SCS,Faculdade de Tecnologia de São Caetano do Sul,Faculdade,Pública Estadual,code_match,2026-05-14
+15746,FATECIPI,Faculdade de Tecnologia do Ipiranga,Faculdade,Pública Estadual,code_match,2026-05-14
+15752,FATEC GR,Faculdade de Tecnologia de Guarulhos,Faculdade,Pública Estadual,code_match,2026-05-14
+15753,FATEC JBL,FACULDADE DE TECNOLOGIA NILO DE STÉFANI - JABOTICABAL,Faculdade,Pública Estadual,code_match,2026-05-14
+15757,Fatec Barueri,Faculdade de Tecnologia de Barueri,Faculdade,Pública Estadual,code_match,2026-05-14
+15769,Fatec Jales,Faculdade de Tecnologia de Jales,Faculdade,Pública Estadual,code_match,2026-05-14
+15777,,,,,not_found,2026-05-14
+15784,Fatec Marilia,Faculdade de Tecnologia Estudante Rafael Almeida Camarinha - Marilia,Faculdade,Pública Estadual,code_match,2026-05-14
+15793,Fatec SS,Faculdade de Tecnologia de São Sebastião,Faculdade,Pública Estadual,code_match,2026-05-14
+15803,FATEC TATUÍ,FACULDADE DE TECNOLOGIA DE TATUÍ - PROF. WILSON ROBERTO RIBEIRO DE CAMARGO,Faculdade,Pública Estadual,code_match,2026-05-14
 15839,-,FACULDADE PITÁGORAS UNOPAR DE JOÃO PESSOA,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+15859,FACAP,Faculdade Católica Paulista,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+15873,,,,,not_found,2026-05-14
+15894,-,FACULDADE SOBRESP DE SANTA MARIA,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+15922,FABAD,Faculdade FABAD Em supervisão - Procedimento Sancionador: Portaria N. 756/2025,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+15980,FG,FG Faculdade Global,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+16010,FACELI,FACULDADE DE ENSINO SUPERIOR DE LINHARES,Faculdade,Pública Municipal,code_match,2026-05-14
+16194,FGT,Faculdade Gran Tietê,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+16225,FARJ,Faculdade Regional do Jacuípe,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+16245,FAENE,FACULDADE ESCOLA DE NEGÓCIOS EXCELLENCE,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+16395,FATEC,Faculdade de Tecnologia de Carapicuiba,Faculdade,Pública Estadual,code_match,2026-05-14
+16410,FATEC Catanduva,Faculdade de Tecnologia de Catanduva,Faculdade,Pública Estadual,code_match,2026-05-14
+16453,,,,,not_found,2026-05-14
+16525,FDC,FACULDADE DUARTE COELHO,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+16543,FAMEESP,Faculdade Metropolitana do Estado de São Paulo,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+16559,FASC,FACULDADE SÃO FRANCISCO DO CEARÁ,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+16628,FANASPS,Faculdade ANASPS,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+16728,AFYA PALMAS,AFYA Faculdade de Ciências Médicas de Palmas,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+16759,FAN,Faculdade Alto Norte,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+16782,FAMAQUI,Faculdade Mário Quintana,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+16864,FCI,Faculdade Cultura Inglesa,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+16879,FMO,Faculdade de Medicina de Olinda,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+16894,ISL,Faculdade Internacional de São Luís,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+16898,FAM,FACULDADE DE EDUCAÇÃO E TECNOLOGIA DA AMAZÔNIA,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 16914,,,,,not_found,2026-05-13
 16918,-,FACULDADE CATÓLICA DE FEIRA DE SANTANA,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+16934,MÉLIÈS,Faculdade Méliès,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 16943,,,,,not_found,2026-05-13
+17014,CSEJCDA,CENTRO SUPERIOR DE ESTUDOS JURÍDICOS CARLOS DRUMMOND DE ANDRADE,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+17115,FTM,FACULDADE TRÊS MARIAS,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+17116,FATIP,FACULDADE DE TECNOLOGIA E INOVAÇÃO DE PERNAMBUCO,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+17118,AJES,Faculdade do Norte de Mato Grosso,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+17138,Católica em Joinvile,Centro Universitário - Católica de Santa Catarina em Joinville,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-14
+17165,,,,,not_found,2026-05-14
+17200,FBT,Faculdade Brasileira de Tributação,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+17224,CESMAC Sertão,Faculdade Cesmac do Sertão,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+17226,CESMAC Agreste,Faculdade Cesmac do Agreste,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+17277,Senac Criciúma,Faculdade  SENAC Criciúma,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+17284,UNINASSAU,CENTRO UNIVERSITÁRIO MAURÍCIO DE NASSAU DE SÃO LUÍS,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-14
+17288,FATEBE,Faculdade Teológica Betânia,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
 17289,-,Faculdade Uriel de Almeida Leitão,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+17322,,,,,not_found,2026-05-14
 17326,-,FACULDADE GIANNA BERETTA,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
 17348,-,Faculdade Alis de Itabirito,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+17352,FEMAF,Faculdade de Educação Memorial Adelaide Franco,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+17355,FECS,Faculdade de Educação em Ciências da Saúde,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+17394,F5,FACULDADE 05 DE JULHO,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+17400,,,,,not_found,2026-05-14
+17401,FATECNA,Faculdade de Tecnologia CNA,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+17403,UNIARI,CENTRO UNIVERSITÁRIO ARI DE SÁ,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-14
+17405,FAM,FACULDADE AFONSO MAFRENSE,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+17420,FAC-CESUMAR,FACULDADE CESUMAR DE PONTA GROSSA,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+17433,Afya VIC,Afya Faculdade de Vitória da Conquista,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+17438,FCCSPA,Faculdade Católica Cavanis do Sudoeste do Pará,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+17487,FAMMA,Faculdade Metropolitana do Marajó,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+17498,Afya FCM VIC,Afya Faculdade de Ciências Médicas de Vitória da Conquista,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+17499,FAVILI,FACULDADE VIDAL,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+17542,,,,,not_found,2026-05-14
+17553,FAMEP,Faculdades FAMEP Unidade Lago da Pedra - MA,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+17558,FASA,Faculdade Santo André,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+17559,FALOG,FACULDADE LOGOS,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+17563,FCOESP,FACULDADE DE TECNOLOGIA COESP,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+17565,Afya Parnaíba,Afya Faculdade de Parnaíba,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+17587,,,,,not_found,2026-05-14
+17590,ISAE,Faculdade ISAE BRASIL,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+17593,FDB,Faculdade de Botucatu,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+17598,WLASAN,FACULDADE PROF. WLADEMIR DOS SANTOS,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+17608,-,Centro Universitário Faep,Centro Universitário,Privada sem fins lucrativos,code_match,2026-05-14
+17628,-,Centro Universitário do Maciço de Baturité,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-14
+17632,FAC-CESUMAR,Faculdade CESUMAR de Londrina,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+17662,FG,Faculdade Galileu,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 17666,,,,,not_found,2026-05-13
 17667,-,FACULDADE ANHANGUERA UNIDADE PARAUAPEBAS,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+17670,UniQ,"Faculdade de Quixeramobim Suspensão de Ingresso: Suspensão para protocolar pedido de Autorização para cursos de Licenciatura em Pedagogia EaD e Bacharelado em Teologia EaD; proibição de oferta de cursos de Formação Pedagógica para graduados não licenciados e de Segunda Licenciatura. Prazo: 2 anos, conforme Portaria SERES/MEC 273/2025",Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 17674,-,"Faculdade de Educação de São Mateus Suspensão contrato FIES: Não preenchimento do último Censo, Art. 2º e 4º da Portaria 794/2013. , Portaria N. 468/2025 - DOU 16/07/2025, SEI 23000.045436/2024-17",Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+17680,,,,,not_found,2026-05-14
+17688,FADAM,"FACULDADE FADAM Suspensão contrato FIES: Não preenchimento do último Censo, Art. 2º e 4º da Portaria 794/2013. , Portaria N. 468/2025 - DOU 16/07/2025, SEI 23000.045436/2024-17",Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+17715,FACESP,FACULDADE DE EDUCAÇÃO SUPERIOR DE PERNAMBUCO,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+17731,FASESP,FACULDADE SESI-SP DE EDUCAÇÃO,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+17738,FACESGRANRIO,Faculdade Cesgranrio,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+17749,América,Faculdade América,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+17758,FAMEP,Faculdades FAMEP Unidade Euclides da Cunha - BA,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+17775,FACISST,Faculdade de Ciências da Saúde de Serra Talhada,Faculdade,Especial,code_match,2026-05-14
 17777,-,FACULDADE SENAC CONCÓRDIA,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
 17816,,,,,not_found,2026-05-13
 17839,-,FACULDADE DE DRACENA,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+17854,UniFECAF,Centro Universitário UniFECAF,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-14
+17874,FAEST,Faculdade de Educação Superior de Tangará da Serra,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+17875,FACBEL,Faculdade Católica de Belém,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+17876,FAES,FACULDADE ESPÍRITO SANTO,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 17887,-,Faculdade de Ciências Médicas de São José dos Campos,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+17889,IBG,FACULDADE IBG,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+17902,ESAMC,FACULDADE ESAMC JUNDIAÍ,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 17928,-,Faculdade Aliança Educacional do Estado de São Paulo,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+17982,FACUR,Faculdade Rhema,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 18009,EB,FACULDADE EB,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+18010,,,,,not_found,2026-05-14
+18019,FEDUC,Faculdade da Educação,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
 18023,-,FACULDADE UNINASSAU PETROLINA,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+18025,FACESC,FACULDADE DE EDUCAÇÃO SUPERIOR DE CHAPECÓ,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+18034,CESURG,Centro de Ensino Superior Riograndense,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+18036,FACULDADE FAECH,FACULDADE DE EMPREENDEDORISMO E CIÊNCIAS HUMANAS,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+18048,FVT,Faculdade Vértix Trirriense,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+18049,FATEC TAUBATÉ,Faculdade de Tecnologia de Taubaté,Faculdade,Pública Estadual,code_match,2026-05-14
+18051,FACINE,Faculdades de Ciências e Tecnologia do Nordeste LTDA,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 18062,-,Faculdade Marechal Rondon,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+18065,CFQ,CISNE - FACULDADE DE QUIXADÁ,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+18067,,,,,not_found,2026-05-14
+18073,FFC,Faculdade Fasipe Cuiabá,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 18077,-,Faculdade Cosmopolita,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+18114,FFMT,Faculdade Fasipe Mato Grosso,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+18133,FACUNICAMPS GOIÂNIA,Centro Universitário Facunicamps Goiânia,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-14
+18147,,,,,not_found,2026-05-14
+18148,FCC,FACULDADE CONHECIMENTO & CIÊNCIA,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+18165,UNIVESP,Fundação Universidade Virtual do Estado de São Paulo,Universidade,Pública Estadual,code_match,2026-05-14
+18201,SENAC Palhoça,FACULDADE SENAC PALHOÇA,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
 18210,-,Faculdade Uninassau Olinda - Nassau Olinda,Faculdade,Privada com fins lucrativos,name_match,2026-05-13
 18211,-,FACULDADE UNINASSAU CABO,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+18253,FAVALE,FACULDADE VALE DO AÇO,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+18258,FAUESP,FACULDADE UNIFICADA DO ESTADO DE SÃO PAULO,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+18267,FACIGMA,FACULDADE INTEGRADA DE GESTÃO E MEIO AMBIENTE,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+18288,FLAM,Faculdade Latino-americana,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+18296,Faculdade AGES,Faculdade AGES de Tucano,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+18440,UNIFESSPA,UNIVERSIDADE FEDERAL DO SUL E SUDESTE DO PARÁ,Universidade,Pública Federal,code_match,2026-05-14
+18454,Unaset,Faculdade Una de Sete Lagoas,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+18462,FACURVELO,FACULDADE PROMOVE DE CURVELO,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+18471,FAMA,Faculdades Aggeu Magalhães,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+18478,FACPP,Faculdade Paulo Picanço,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+18492,UNESPAR,Universidade Estadual do Paraná,Universidade,Pública Estadual,code_match,2026-05-14
+18506,UFOB,UNIVERSIDADE FEDERAL DO OESTE DA BAHIA,Universidade,Pública Federal,code_match,2026-05-14
+18526,FCO,FACULDADE DE OSASCO,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+18623,FAMAR,FACULDADE ALIANÇA DO MARANHÃO,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 18625,-,Faculdade Anhanguera De Vitória Da Conquista,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+18631,AJES,FACULDADE DO VALE DO RIO ARINOS,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+18636,FARESI,Faculdade da Região Sisaleira,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+18637,IMES,Faculdade IMES,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
 18639,-,Faculdade Pitágoras de Bacabal,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
 18643,-,FACULDADE UNINASSAU MARACANAÚ,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
 18648,-,Faculdade Uninassau Arapiraca,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
 18649,-,FACULDADE UNINASSAU MOSSORÓ,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+18650,FMN RIO BRANCO,UNAMA FACULDADE DA AMAZÔNIA DE RIO BRANCO,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+18651,UNAMA,Unama Faculdade da Amazônia de Boa Vista,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+18653,Nassau Garanhuns,Faculdade Uninassau Garanhuns,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 18659,-,FACULDADE ANHANGUERA DO CEARÁ Em Descredenciamento voluntário: Conforme processo e-MEC nÂº 202528926,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+18667,FSA,FACULDADE SANTO ANTÔNIO,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 18671,-,FACULDADE DA AMAZÔNIA DE PORTO VELHO,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
 18684,-,Faculdade Santa Teresa,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+18703,ESAS,ENSINO SUPERIOR ALBERT SABIN,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+18708,Faculdade AGES,Faculdade AGES de Senhor do Bonfim,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+18735,-,FACULDADE ONE LEARNING,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+18745,FACAPI,Faculdade de Ciências Aplicadas Piauiense,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+18759,UFCA,UNIVERSIDADE FEDERAL DO CARIRI,Universidade,Pública Federal,code_match,2026-05-14
+18812,UFSB,UNIVERSIDADE FEDERAL DO SUL DA BAHIA,Universidade,Pública Federal,code_match,2026-05-14
 18814,-,Faculdade Ibiapaba,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+18817,FATEC-SR,Faculdade de Tecnologia de São Roque,Faculdade,Pública Estadual,code_match,2026-05-14
 18826,-,Faculdade FILOS,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
 18874,-,FACULDADE RAIMUNDO MARINHO DE PENEDO,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+18896,SOBERANA,Soberana Faculdade de Saúde de Petrolina,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 18952,-,Faculdade FAMART,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+18956,FACITEC,Faculdade de Ciências e Tecnologia de Janaúba,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+18978,FRCG,Faculdade Rebouças de Campina Grande,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+18979,MULTIVIX VILA V,Faculdade Multivix Vila Velha,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+19171,FACOB,Faculdade Olavo Bilac,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+19172,FIMCAVILHENA,Faculdades Integradas Aparício Carvalho Vilhena,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+19173,FACULDADE UniFIC,FACULDADES INTEGRADAS DO CEARÁ UNIFIC,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+19189,,,,,not_found,2026-05-14
+19206,F. UNIRB,FACULDADE UNIRB - FORTALEZA,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+19210,FIT,Faculdades Integradas de Taguaí,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+19219,FACDF,FACULDADE FASIPE DF,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+19252,FATAC,FACULDADE DE TECNOLOGIA ALPHA CHANNEL,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+19257,Una Divinopolis,Faculdade UNA de Divinópolis,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+19260,FPJ,FACULDADE ANHANGUERA DE JEQUIÉ,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+19284,FBBR,FACULDADE BRASILEIRA DO RECÔNCAVO,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+19287,FCMA,Faculdade do Centro Maranhense,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+19297,FAPIDE,FACULDADE PIO DECIMO DE CANINDE DO SAO FRANCISCO,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 19323,-,FACULDADE ANHANGUERA DE MARABÁ,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+19325,FACOP,Faculdade do Centro Oeste Paulista,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+19327,FCE,Faculdade Cesar,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+19334,Nassau Brasília,Faculdade Uninassau Brasília,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 19337,-,FACULDADE UNIFAMETRO MARACANAÚ,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+19369,FEVN,Faculdade EDVANC Neuroeducação,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+19374,FSL,FACULDADE SANTA LUZIA,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+19404,,,,,not_found,2026-05-14
+19408,Faculdade AGES,Faculdade AGES de Jacobina,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+19500,FATEC São Carlo,Faculdade de Tecnologia de São Carlos,Faculdade,Pública Estadual,code_match,2026-05-14
+19501,FATEC SEBRAE,Faculdade de Tecnologia Sebrae,Faculdade,Pública Estadual,code_match,2026-05-14
+19512,-,Centro Universitário Imepac - Araguari,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-14
+19554,FAPETRUS,Faculdade Petrus,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+19555,FAVEPORT,Favenorte de Porteirinha,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+19563,UMFG,Faculdade UMFG,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+19565,FATEPE,Faculdade Tecnológica de Pernambuco,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+19578,FATEC COTIA,Faculdade de Tecnologia de Cotia,Faculdade,Pública Estadual,code_match,2026-05-14
+19586,UNITÀ,FACULDADE UNITÀ,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+19588,FAETERJ CAXIAS,Faculdade de Educação Tecnológica do Estado do Rio de Janeiro,Faculdade,Pública Estadual,code_match,2026-05-14
+19597,FVS,Faculdade ViaSapiens,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+19607,FAST,FACULDADE SANTISSIMA TRINDADE,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 19632,FADIC,FACULDADE DAMAS DA INSTRUÇÃO CRISTÃ,Faculdade,Privada sem fins lucrativos,name_match,2026-05-13
+19670,FACSMV,Faculdade de Ciências da Saúde Moinhos de Vento,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+19739,FATEC CAMPINAS,Faculdade de Tecnologia de Campinas,Faculdade,Pública Estadual,code_match,2026-05-14
+19780,-,Faculdade Anhanguera Unopar de Guanambi,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+19783,FPP,FACULDADE ANHANGUERA DE PARAGOMINAS,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+19786,FPS,FACULDADE ANHANGUERA DE SERRA,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 19788,-,FACULDADE ANHANGUERA DE PARAUAPEBAS,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+19793,FADAM,"FACULDADE FADAM DE MARACANAÚ Suspensão contrato FIES: Não preenchimento do último Censo, Art. 2º e 4º da Portaria 794/2013. , Portaria N. 468/2025 - DOU 16/07/2025, SEI 23000.045436/2024-17",Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+19838,FALUP,Faculdade Lusitana de Pernambuco,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+19842,CESBA,CENTRO DE ENSINO SUPERIOR DE BACABEIRA,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 19844,-,FACULDADE UNINASSAU SOBRAL,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+19853,Dom Bosco Paraná,Faculdade Dom Bosco Paraná,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+19861,FASP,Faculdade de Santana de Parnaíba,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+19862,FATEC Bebedouro,Faculdade de Tecnologia Jorge Caram Sabbag,Faculdade,Pública Estadual,code_match,2026-05-14
+19863,FATEC Assis,Faculdade de Tecnologia de Assis,Faculdade,Pública Estadual,code_match,2026-05-14
+19864,FATEC Itapira,Faculdade de Tecnologia de Itapira,Faculdade,Pública Estadual,code_match,2026-05-14
+19865,Una PousoAlegre,Faculdade Una de Pouso Alegre,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+19879,IPESSP,Faculdade IPESSP,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+19883,FASUPI,Faculdade Sul Paulista de Itanhaém,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+19910,FPC,Faculdades Planalto Central,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+19943,SAPIENS,CENTRO UNIVERSITÁRIO UNISAPIENS,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-14
+19963,FCO,Faculdade de Ciências Odontológicas,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 20053,-,FACULDADE UNIMED,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+20074,IBC,"Instituto Brasileiro de Coaching Suspensão contrato FIES: Não preenchimento do último Censo, Art. 2º e 4º da Portaria 794/2013. , Portaria N. 468/2025 - DOU 16/07/2025, SEI 23000.045436/2024-17",Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+20105,FACISA,Faculdade de Ciências e Saúde Estácio IDOMED,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 20106,FABAPE,FACULDADE BATISTA DE PERNAMBUCO,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+20110,FATEC,Faculdade de Administração e Tecnologia Estácio IDOMED,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+20322,EESAP,Escola de Ensino Superior do Agreste Paraibano,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+20328,FAOA,FACULDADE DE ODONTOLOGIA DA APCD,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+20330,,,,,not_found,2026-05-14
+20340,FPCS,FACULDADE PAULISTA DE CIÊNCIAS DA SAÚDE,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
 20455,FAC BSSP,FACULDADE DE GESTÃO BSSP,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+20476,ANCLIVEPA,Faculdade ANCLIVEPA,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+20478,FATEC-SPB,Faculdade de Tecnologia de Santana de Parnaíba,Faculdade,Pública Estadual,code_match,2026-05-14
+20499,FPM,FACULDADE DE PRINCÍPIOS MILITARES,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+20530,FMO,Faculdade Marquês de Olinda,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+20532,FMH,Faculdade Metropolitana de Horizonte,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+20541,-,FACULDADE UNISE,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 20547,,,,,not_found,2026-05-13
+20570,Alpha,Faculdade Alpha,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+20586,FVG,Faculdade Van Gogh,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 20588,-,Faculdade de Direito de Uruguaiana - Anhanguera,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
 20591,-,FACULDADE UNIS POUSO ALEGRE Em Descredenciamento voluntário: Conforme processo e-MEC nÂº 202607426,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
 20605,-,Faculdades Sulamérica Bahia,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+20606,FTC Juazeiro,Faculdade de Tecnologia e Ciências,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+20607,FTC Petrolina,Faculdade de Tecnologia e Ciências - FTC Petrolina,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+20636,Keppe & Pacheco,Faculdade Trilógica Keppe & Pacheco,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+20651,IDAAM,Faculdades IDAAM Em Descredenciamento voluntário: Conforme processo e-MEC nÂº 202506693,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+20666,FAELO,Faculdade ELO,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+20667,UNETRI,UNETRI FACULDADES,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+20682,Faculdade IDOR,Faculdade IDOR de Ciências Médicas,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+21088,FRT,FACULDADE RODOLFO TEÓFILO,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+21108,FSJ,Faculdade São Judas de Terra Boa,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+21200,ISMD,Faculdade ISMD,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+21204,FACTERP,FACULDADE UNITERP,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 21224,FICV,FACULDADE INTERNACIONAL CIDADE VIVA,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+21226,FASU,FACULDADE SUDOESTE,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+21239,FAJ,Faculdade Anhanguera de Jaú,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+21240,F. UNIRB,FACULDADE UNIRB - PIAUÍ,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+21262,FRJ,FACULDADE REGIONAL JAGUARIBANA,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
 21268,-,FACULDADE ESTÁCIO DE ANANINDEUA,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+21321,FAS,Faculdade Sensu,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+21426,NOVOESTE,Faculdade Novoeste,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+21463,FEP,FACULDADE DE ENSINO PORTAL,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+21494,FIP,FACULDADES INTEGRADAS DE PATOS,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+21502,FIP,FACULDADES INTEGRADAS POTENCIAL,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+21514,,,,,not_found,2026-05-14
+21519,Atitus Educação,Faculdade Atitus Educação Porto Alegre,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+21537,FASA,Faculdade de Santo Ângelo,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+21553,-,FACULDADE ANHANGUERA DE SANTO ANTÔNIO DE JESUS,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+21554,FAI,Faculdade Anhanguera de Itapeva,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+21556,FAG,FACULDADE DE GOIANA,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+21557,FAP,FACULDADE DOS PALMARES,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+21583,FAESPE,FACULDADE DE EDUCAÇÃO SUPERIOR DE PERNAMBUCO,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+21593,PLUS,Faculdade Plus,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+21616,ATUALIZA,FACULDADE ATUALIZA,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+21631,FACSUR,FACULDADE SUPREMO REDENTOR,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+21638,PECEGE,Faculdade PECEGE,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+21643,FRS,Faculdade Rudolf Steiner,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+21672,FACE,Faculdade Cerrado,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+21675,FacCidade,FACULDADE CIDADE DE APARECIDA DE GOIÂNIA,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 21680,-,FACULDADE CEAFI,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+21687,-,FACULDADE ANHANGUERA ITABIRA,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+21693,FAF,Faculdade Anhanguera Franca,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 21713,-,Faculdade de Tecnologia - Fatec de Ribeirão Preto,Faculdade,Pública Estadual,code_match,2026-05-13
+21716,FACESMA,FACULDADE CESMA DE MARACANAÚ,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 21764,-,Faculdade de Ciências da Saúde IGESP,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+21788,IDE,Instituto de Desenvolvimento Educacional,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
 21821,-,Faculdade de Tecnologia Senac Maringá,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+21822,,,,,not_found,2026-05-14
 21826,-,Faculdade Sebrae,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+21847,FAMED,FACULDADE M-EDUCAR,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+21872,CENBRAP,"Faculdade CENBRAP Descredenciada: presencialmente, de forma voluntária, conforme Portaria nº 132/2026 e Processo SEI nº 23000.003859/2025-32.",Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+21877,FINAMA,FACULDADE INTEGRADA DA AMAZÔNIA,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+21892,CESUP,CENTRO DE ENSINO SUPERIOR DE PALMAS,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+21931,Una,Faculdade Una de Jataí,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 21940,-,Faculdade Phorte de Educação e Tecnologia,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+21949,SIGLA IESLA,INSTITUTO DE EDUCACAO SUPERIOR LATINOAMERICANO,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+21952,FGV/RI,FGV / Escola de Relações Internacionais,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+21982,FIC,Faculdade Integrada CETE,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 21995,-,Faculdade de Tecnologia Senac Curitiba,Faculdade,Privada sem fins lucrativos,code_match,2026-05-13
+22015,FAMA,Faculdade Municipal de Educação e Meio Ambiente,Faculdade,Pública Municipal,code_match,2026-05-14
+22018,FASTECH,Faculdade de Tecnologia de Sinop,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+22021,FASPREV,FACULDADE SÃO PAULO DE PRESIDENTE VENCESLAU,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 22059,-,Faculdade Pitágoras de Medicina de Eunápolis,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+22073,FAMAM,FACULDADE MACÊDO DE AMORIM,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+22075,FVP,FACULDADE VALE DO PAJEU,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 22076,-,Faculdade Estácio de Alagoinhas,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+22088,AFYA ITABUNA,Afya Faculdade de Ciências Médicas de Itabuna,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 22089,Uniinsted,Centro Universitário Insted,Centro Universitário,Privada com fins lucrativos,code_match,2026-05-13
+22090,FACS - GHC,FACULDADE DE CIÊNCIAS DA SAÚDE DO GRUPO HOSPITALAR CONCEIÇÃO,Faculdade,Pública Federal,code_match,2026-05-14
+22093,Faculdade AGES,Faculdade AGES de Medicina,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+22096,SLMANDIC-ARARAS,FACULDADE SÃO LEOPOLDO MANDIC DE ARARAS,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+22103,-,Faculdade de Saúde Santa Casa BH,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+22104,Afya Guanambi,Afya Faculdade de Ciências Médicas de Guanambi,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+22116,FAMIPE,Faculdade de Miguel Pereira,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+22121,FCM/TR,Faculdade de Ciências Médicas de Três Rios,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+22176,FacEnau,Faculdade ENAU,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+22191,Estácio Jaraguá,Faculdade Estácio de Jaraguá do Sul,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 22194,-,FACULDADE ATENAS SETE LAGOAS,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
 22195,,,,,not_found,2026-05-13
 22197,-,FACULDADE ATENAS PASSOS,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+22202,EstácioJuazeiro,Faculdade Estácio de Juazeiro,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+22204,UNIFAMA,Faculdade de Matupá,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+22239,FINAMA,FACULDADE  INTEGRADA DE ADVOCACIA DA  AMAZÔNIA,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 22263,-,FACULDADE VANGUARDA,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+22266,FGV/IDT,Instituto de Desenvolvimento Tecnológico da FGV,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+22312,NOVE-OSASCO,FACULDADE NOVE DE JULHO DE OSASCO,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+22316,NOVE_MAUÁ,FACULDADE NOVE DE JULHO MAUÁ,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+22319,Fatec Itatiba,Faculdade de Tecnologia de Itatiba,Faculdade,Pública Estadual,code_match,2026-05-14
+22455,LÍBANO,Faculdade Líbano,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 22456,-,FACULDADE REALIZA,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+22463,FIP,Faculdade Impacto de Porangatu,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 22514,AFYA JABOATÃO,Afya Faculdade de Ciências Médicas de Jaboatão dos Guararapes,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+22527,FCL,Faculdade Cleber Leite,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 22578,-,FACULDADE CENSUPEG,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+22592,FAC INTEGRA,FACULDADES INTEGRADAS DA AMÉRICA DO SUL,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+22603,FAGH,FACULDADE ANCLIVEPA DE GESTÃO E HUMANOLOGIA,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+22605,Anclivepa SP,Faculdade Anclivepa São Paulo,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+22628,CLARETIANOBV,CLARETIANO - FACULDADE DE BOA VISTA,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
 22736,-,Faculdade UNISUL de Itajaí,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+22758,Una,Faculdade Una de Itabira,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+22862,FSPME,Faculdade São Paulo Master Education,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+22917,FACMAR,FACULDADE DE CIÊNCIAS MÉDICAS DE MARICÁ,Faculdade,Privada sem fins lucrativos,code_match,2026-05-14
+22939,FATEC ARQ,Faculdade de Tecnologia de Araraquara,Faculdade,Pública Estadual,code_match,2026-05-14
+23095,SOCIESC,Instituto SOCIESC de Jaraguá do Sul,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
+23147,FAC-SP,Faculdade do Comércio de São Paulo,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 23163,-,Faculdade de Educação Superior de Divinópolis,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
 23164,-,Centro de Ensino Superior de Divinópolis,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
 23169,,,,,not_found,2026-05-13
@@ -2833,10 +3146,18 @@ Local: Associação Centro Evangélico de educação, Cultura e Assistência Soc
 23273,-,Faculdade UNA de Itumbiara,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
 23275,-,Faculdade de Agronomia UNA de Conselheiro Lafaiete,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
 23358,-,Centro de Ensino Superior SOCIESC de Jaraguá do Sul,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+23410,UEMASUL,UNIVERSIDADE ESTADUAL DA REGIÃO TOCANTINA DO MARANHÃO,Universidade,Pública Estadual,code_match,2026-05-14
 23438,-,Faculdade de Tecnologia de Araras,Faculdade,Pública Estadual,code_match,2026-05-13
+23454,-,Faculdade Zarns - Itumbiara,Faculdade,Privada com fins lucrativos,code_match,2026-05-14
 23459,-,Faculdade de Tecnologia de Adamantina,Faculdade,Pública Estadual,code_match,2026-05-13
 23700,-,Faculdade de Tecnologia de Ferraz de Vasconcelos,Faculdade,Pública Estadual,code_match,2026-05-13
 23705,-,FACULDADE DE TECNOLOGIA DE FRANCO DA ROCHA,Faculdade,Pública Estadual,code_match,2026-05-13
 23820,FD,Faculdade Dunamis,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
+23867,Fatec de Sumaré,Faculdade de Tecnologia de Sumaré,Faculdade,Pública Estadual,code_match,2026-05-14
 24024,FSD,Faculdade Serra Dourada - Lorena,Faculdade,Privada com fins lucrativos,code_match,2026-05-13
 24025,,,,,not_found,2026-05-13
+25274,UFCAT,UNIVERSIDADE FEDERAL DE CATALÃO,Universidade,Pública Federal,code_match,2026-05-14
+25275,UFAPE,UNIVERSIDADE FEDERAL DO AGRESTE DE PERNAMBUCO,Universidade,Pública Federal,code_match,2026-05-14
+25277,UFDPAR,UNIVERSIDADE FEDERAL DO DELTA DO PARNAIBA,Universidade,Pública Federal,code_match,2026-05-14
+25282,UFJ,UNIVERSIDADE FEDERAL DE JATAÍ,Universidade,Pública Federal,code_match,2026-05-14
+25352,UFR,Universidade Federal de Rondonópolis,Universidade,Pública Federal,code_match,2026-05-14
