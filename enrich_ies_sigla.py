@@ -76,6 +76,12 @@ NAME_MATCH_THRESHOLD = 0.5
 CLOUDFLARE_TITLES = ("just a moment", "checking your browser", "verifying")
 
 
+class SearchStuckError(Exception):
+    """O e-MEC parou de responder: nem a tabela de resultados nem a mensagem
+    'Nenhum registro encontrado!' apareceram dentro do timeout, ou o formulário
+    não terminou de carregar. A recuperação é recarregar a página."""
+
+
 # ---------------------------------------------------------------------------
 # Comparação de nomes (tolera typos e reordenamentos)
 # ---------------------------------------------------------------------------
@@ -235,9 +241,9 @@ def search_consulta_avancada(driver, name: str, timeout: float = 120) -> list[di
             link = driver.find_element(By.PARTIAL_LINK_TEXT, "Consulta Avançada")
             driver.execute_script("arguments[0].click();", link)
         except Exception:
-            return []
+            raise SearchStuckError("formulário Consulta Avançada não carregou")
         if not _wait_for_real_page(driver, (By.ID, "txt_no_ies"), timeout=30):
-            return []
+            raise SearchStuckError("formulário Consulta Avançada não carregou")
 
     # Seleciona radio "IES"
     for radio in driver.find_elements(By.NAME, "data[CONSULTA_AVANCADA][rad_buscar_por]"):
@@ -265,7 +271,10 @@ def search_consulta_avancada(driver, name: str, timeout: float = 120) -> list[di
         "arguments[0].click();", driver.find_element(By.ID, "btnPesqAvancada")
     )
 
-    # Aguarda resultado ou mensagem 'Nenhum registro encontrado!'
+    # Aguarda resultado ou mensagem 'Nenhum registro encontrado!'. Se nenhum
+    # dos dois aparecer no timeout, o formulário travou (sintoma: a seção de
+    # resultados some e clicar 'Pesquisar' não atualiza nada) — sinalizamos
+    # com SearchStuckError para que o chamador recarregue a página.
     deadline = time.time() + timeout
     while time.time() < deadline:
         try:
@@ -278,7 +287,9 @@ def search_consulta_avancada(driver, name: str, timeout: float = 120) -> list[di
             break
         time.sleep(0.5)
     else:
-        return []
+        raise SearchStuckError(
+            f"sem tabela nem mensagem após {timeout:.0f}s buscando {name!r}"
+        )
 
     soup = BeautifulSoup(driver.page_source, "html.parser")
     container = soup.find(id="div_listar_consulta_avancada")
@@ -418,21 +429,65 @@ def main() -> None:
     today = time.strftime("%Y-%m-%d")
 
     def safe_call(fn, *args, **kwargs):
+        """Executa fn(driver, ...) com recuperação automática.
+
+        - SearchStuckError (sintoma do usuário: a tabela de resultados sumiu e
+          clicar 'Pesquisar' não atualiza nada): recarrega a página e tenta de
+          novo até `max_reloads`. Se ainda assim travar, reinicia o navegador
+          até `max_restarts` vezes antes de desistir desta IES.
+        - InvalidSessionIdException / WebDriverException (navegador morreu):
+          reinicia o navegador e tenta uma vez.
+        """
         nonlocal driver
-        try:
-            return fn(driver, *args, **kwargs)
-        except (InvalidSessionIdException, WebDriverException) as exc:
-            print(f"      browser died ({type(exc).__name__}); restarting...", flush=True)
-            try:
-                driver.quit()
-            except Exception:
-                pass
-            driver = _start_browser()
+        max_reloads = 3
+        max_restarts = 2
+        reloads = 0
+        restarts = 0
+        while True:
             try:
                 return fn(driver, *args, **kwargs)
-            except Exception as exc2:
-                print(f"      retry failed: {exc2}", flush=True)
+            except SearchStuckError as exc:
+                if reloads < max_reloads:
+                    reloads += 1
+                    print(
+                        f"      página travou ({exc}); recarregando "
+                        f"[reload {reloads}/{max_reloads}]...",
+                        flush=True,
+                    )
+                    try:
+                        driver.get(EMEC_FORM)
+                    except Exception:
+                        pass
+                    time.sleep(3)
+                    continue
+                if restarts < max_restarts:
+                    restarts += 1
+                    reloads = 0
+                    print(
+                        f"      reloads esgotados; reiniciando navegador "
+                        f"[restart {restarts}/{max_restarts}]...",
+                        flush=True,
+                    )
+                    try:
+                        driver.quit()
+                    except Exception:
+                        pass
+                    driver = _start_browser()
+                    continue
+                print("      desistindo desta IES após reloads e restarts.", flush=True)
                 return None
+            except (InvalidSessionIdException, WebDriverException) as exc:
+                print(f"      browser died ({type(exc).__name__}); restarting...", flush=True)
+                try:
+                    driver.quit()
+                except Exception:
+                    pass
+                driver = _start_browser()
+                try:
+                    return fn(driver, *args, **kwargs)
+                except Exception as exc2:
+                    print(f"      retry failed: {exc2}", flush=True)
+                    return None
 
     try:
         for i, (code, name) in enumerate(todo, 1):
