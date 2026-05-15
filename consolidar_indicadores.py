@@ -366,6 +366,24 @@ MUNICIPIO_NAME_ALIASES = {
     ("PR", "São José do Pinhais"):        "São José dos Pinhais",
     ("RS", "Santana do Livramento"):      "Sant'Ana do Livramento",
     ("SP", "Ipauçu"):                     "Ipaussu",  # INEP misspelled the IBGE 'Ipaussu'
+    ("MG", "Brasópolis"):                 "Brazópolis",
+    ("MG", "Gouvêa"):                     "Gouveia",
+    ("SC", "Piçarras"):                   "Balneário Piçarras",
+    ("SP", "Moji-Mirim"):                 "Mogi Mirim",
+}
+
+
+# Primeiros 2 dígitos do código IBGE = UF. Usado como fallback quando
+# Sigla da UF na linha está faltando ou inconsistente com a cidade
+# (ENADE 2009 ocasionalmente lista 'BELO HORIZONTE / SP' etc.).
+UF_FROM_IBGE_PREFIX = {
+    "11": "RO", "12": "AC", "13": "AM", "14": "RR", "15": "PA",
+    "16": "AP", "17": "TO",
+    "21": "MA", "22": "PI", "23": "CE", "24": "RN", "25": "PB",
+    "26": "PE", "27": "AL", "28": "SE", "29": "BA",
+    "31": "MG", "32": "ES", "33": "RJ", "35": "SP",
+    "41": "PR", "42": "SC", "43": "RS",
+    "50": "MS", "51": "MT", "52": "GO", "53": "DF",
 }
 
 
@@ -541,6 +559,93 @@ def fill_org_categ_from_cache(df: pd.DataFrame) -> pd.DataFrame:
         mask = missing & resolved.notna()
         df.loc[mask, col] = resolved[mask]
         print(f"  filled {int(mask.sum())} {col} from cache")
+    return df
+
+
+def normalize_municipio_name(df: pd.DataFrame) -> pd.DataFrame:
+    """Canonicaliza Município do Curso pelo catálogo IBGE.
+
+    Estratégia em duas passadas:
+    1. Onde ``Código do Município`` bate no catálogo (formato IBGE de 7
+       dígitos), sobrescreve o nome com o canônico. Colapsa variantes de
+       capitalização/acentuação ('SAO PAULO'/'SÃO PAULO'/'São Paulo').
+    2. Onde o código NÃO bate (códigos legados de 12 dígitos das edições
+       ENADE 2007-2011), resolve via ``(UF, nome normalizado) → código``
+       e sobrescreve TANTO o código quanto o nome para os valores IBGE.
+
+    Idempotente."""
+    if not {"Código do Município", "Município do Curso"}.issubset(df.columns):
+        return df
+
+    mun = pd.read_csv(MUNICIPIOS_CSV, dtype=str)
+    code_col = next(c for c in mun.columns if "CÓDIGO" in c.upper() and "IBGE" in c.upper())
+    name_col = next(c for c in mun.columns
+                    if "MUNIC" in c.upper() and "IBGE" in c.upper() and "CÓDIGO" not in c.upper())
+    code_to_name = {
+        c: n for c, n in zip(mun[code_col].str.strip(),
+                             mun[name_col].fillna("").str.strip()) if n
+    }
+
+    before_unique = int(df["Município do Curso"].nunique(dropna=True))
+
+    codes = df["Código do Município"].map(_normalize_code)
+    canonical = codes.map(code_to_name)
+    pass1_mask = canonical.notna() & (canonical.astype("string")
+                                      != df["Município do Curso"].astype("string"))
+    df.loc[pass1_mask, "Município do Curso"] = canonical[pass1_mask]
+
+    needs_resolve = canonical.isna() & df["Município do Curso"].notna()
+    pass2_count = 0
+    if needs_resolve.any() and "Sigla da UF" in df.columns:
+        name_lookup = load_municipio_lookup()  # (UF, nome_norm) -> codigo IBGE
+
+        def _ufs_to_try(uf_raw, original_code):
+            """Candidatas de UF, em ordem: cada token de Sigla da UF (ENADE
+            2009 às vezes lista 'SP, DF, AM'), depois UF inferida dos 2
+            primeiros dígitos do código original (legacy 12-digit), que cobre
+            casos em que a Sigla da UF está simplesmente errada."""
+            ufs = []
+            if isinstance(uf_raw, str):
+                for token in re.split(r"[,/;]", uf_raw):
+                    uf = clean_uf(token.strip())
+                    if isinstance(uf, str) and uf.upper() not in ufs:
+                        ufs.append(uf.upper())
+            if isinstance(original_code, str) and len(original_code) >= 2:
+                inferred = UF_FROM_IBGE_PREFIX.get(original_code[:2])
+                if inferred and inferred not in ufs:
+                    ufs.append(inferred)
+            return ufs
+
+        def _resolve_one(uf_raw, name_norm, original_code):
+            if not name_norm:
+                return None
+            for uf in _ufs_to_try(uf_raw, original_code):
+                code = name_lookup.get((uf, name_norm))
+                if code:
+                    return code
+            return None
+
+        sub = df.loc[needs_resolve]
+        name_norm = sub["Município do Curso"].map(norm_municipio)
+        orig_code = sub["Código do Município"].map(_normalize_code)
+        resolved_code = pd.Series(
+            [_resolve_one(u, n, c)
+             for u, n, c in zip(sub["Sigla da UF"], name_norm, orig_code)],
+            index=sub.index, dtype="object",
+        )
+        resolved_name = resolved_code.map(code_to_name)
+        hit = resolved_name.notna()
+        if hit.any():
+            df.loc[hit[hit].index, "Código do Município"] = resolved_code[hit]
+            df.loc[hit[hit].index, "Município do Curso"] = resolved_name[hit]
+            pass2_count = int(hit.sum())
+
+    after_unique = int(df["Município do Curso"].nunique(dropna=True))
+    print(
+        f"  canonicalized {int(pass1_mask.sum())} via code lookup + "
+        f"{pass2_count} via name+UF lookup (códigos legados reescritos); "
+        f"unique {before_unique} -> {after_unique}"
+    )
     return df
 
 
@@ -731,6 +836,9 @@ def main() -> None:
 
     print("\nFilling Município do Curso from Código (local then IBGE API)...")
     courses = fill_municipio_name(courses)
+
+    print("\nCanonicalizing Município do Curso names from IBGE catalog...")
+    courses = normalize_municipio_name(courses)
 
     print("\nFilling Sigla da IES from eMEC cache (if present)...")
     courses = fill_sigla_from_cache(courses)
