@@ -28,6 +28,14 @@ PORTUGUESE_CONNECTORS = {
 }
 
 
+# Códigos numéricos legados de CO_ORGACAD que escapam ao decodificador do
+# consolidar_indicadores (cujo dicionário só cataloga códigos modernos
+# 10019/10020/10022/...). Aparecem em ENADE 2004-2008.
+ORG_ACAD_LEGACY_CODES = {
+    "6": "Faculdade",
+}
+
+
 ORG_ACAD_CANONICAL = {
     "universidade": "Universidade",
     "universidades": "Universidade",

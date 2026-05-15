@@ -25,6 +25,8 @@ import re
 
 import pandas as pd
 
+from normalizacao import ORG_ACAD_LEGACY_CODES
+
 from ._common import (
     BASE_CSV,
     CONSOLIDADA_XLSX,
@@ -146,11 +148,17 @@ def _load_indicadores() -> pd.DataFrame:
     ``consolidar_indicadores.py`` já normaliza Nome/Sigla/Org./Categ. para o
     valor do ano mais recente, então basta agregar com ``first()`` para pegar
     o primeiro valor não-nulo por coluna em cada grupo de IES.
+
+    Também aplica ORG_ACAD_LEGACY_CODES para sanar códigos numéricos antigos
+    (ENADE 2004-2008) que escapam ao decodificador do consolidador.
     """
     df = pd.read_excel(INDICADORES_XLSX)
     df = df.rename(columns=INDIC_RENAME)
     df["codigo_ies"] = pd.to_numeric(df["codigo_ies"], errors="coerce").astype("Int64")
     df = df.dropna(subset=["codigo_ies"])
+    df["organizacao"] = df["organizacao"].map(
+        lambda v: ORG_ACAD_LEGACY_CODES.get(str(v).strip(), v) if pd.notna(v) else v
+    )
     return df.groupby("codigo_ies", as_index=False)[INFO_COLS].first()
 
 
