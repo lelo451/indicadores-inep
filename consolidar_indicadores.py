@@ -32,7 +32,7 @@ import warnings
 
 import pandas as pd
 
-from dicionario_comum import (
+from normalizacao import (
     CATEG_ADMIN_CANONICAL,
     ENGENHARIA_GRUPO_RE,
     ORG_ACAD_CANONICAL,

@@ -5,14 +5,14 @@ from __future__ import annotations
 
 import os
 
-from dicionario_comum import consolidate
+from . import consolidate
 
-DATA_ROOT = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def main() -> None:
     consolidate(
-        dict_dir=os.path.join(DATA_ROOT, "Microdados", "enade"),
+        dict_dir=os.path.join(ROOT, "Microdados", "enade"),
         dict_pattern="dicionarios enade *.xls*",
         variables=[
             "CO_CATEGAD",
@@ -22,8 +22,8 @@ def main() -> None:
             "CO_UF_CURSO",
             "CO_MUNIC_CURSO",
         ],
-        municipios_csv=os.path.join(DATA_ROOT, "Microdados", "municipios.csv"),
-        output_path=os.path.join(DATA_ROOT, "dicionario_enade_consolidado.xlsx"),
+        municipios_csv=os.path.join(ROOT, "Microdados", "municipios.csv"),
+        output_path=os.path.join(ROOT, "outputs", "dicionario_enade_consolidado.xlsx"),
     )
 
 
