@@ -403,7 +403,11 @@ def load_targets() -> list[tuple[str, str]]:
     Se existir list_ies.csv (coluna 'codigo_ies'), retorna todos os códigos
     de lá, com o nome buscado em indicadores_consolidados.xlsx quando houver.
     Caso contrário, cai no comportamento original: só IES com sigla faltando."""
-    df = pd.read_excel(INDICADORES, dtype={"Código da IES": str})
+    # Schema novo (Dados + IES) tem Sigla/Nome só na aba IES. Cai para a
+    # aba única (schema antigo) quando IES não existe.
+    xl = pd.ExcelFile(INDICADORES)
+    sheet = "IES" if "IES" in xl.sheet_names else xl.sheet_names[0]
+    df = pd.read_excel(xl, sheet_name=sheet, dtype={"Código da IES": str})
     names = _name_lookup(df)
     if LIST_IES_CSV.exists():
         codes = pd.read_csv(LIST_IES_CSV, dtype=str)["codigo_ies"].astype(str).str.strip()

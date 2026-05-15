@@ -113,23 +113,30 @@ gravados — podem ser executados de qualquer `cwd`.
 
 ## Indicadores consolidados
 
-O arquivo `indicadores_consolidados.xlsx` traz 22 colunas canônicas por linha,
-mesclando os arquivos por (Ano, Código do Curso) no nível de curso e fazendo
-LEFT JOIN com o IGC no nível de IES.
+O arquivo `indicadores_consolidados.xlsx` tem duas abas:
+
+**Aba `Dados`** — granularidade de curso (Ano + Código do Curso, com
+LEFT JOIN de IGC por Código da IES). Sigla, Organização e Categoria foram
+movidas para a dimensão `IES`; apenas `Código da IES` (chave) e `Nome da
+IES` (refrescado da aba `IES`) ficam inline.
 
 | Coluna | Origem |
 | --- | --- |
 | Ano | filename ou coluna do arquivo |
 | Código da Área, Área de Avaliação | ENADE, CPC, IDD |
 | Grau Acadêmico | arquivos 2018+ |
-| Código da IES, Nome da IES, Sigla da IES | todos |
-| Organização Acadêmica, Categoria Administrativa | todos (em IGC pré-2017 a Organização é inferida da aba) |
+| Código da IES, Nome da IES | todos (Nome refrescado da aba `IES`) |
 | Código do Curso, Modalidade de Ensino | ENADE/CPC/IDD pós-2014 |
 | Código do Município, Município do Curso, Sigla da UF | todos (município preenchido por catálogo IBGE quando faltava) |
 | Conceito Enade (Contínuo/Faixa) | arquivos ENADE e enade_cpc |
 | CPC (Contínuo/Faixa) | arquivos CPC e enade_cpc |
 | IDD (Contínuo/Faixa) | arquivos IDD; o Contínuo também vem de `Nota IDD` em CPCs antigos |
 | IGC (Contínuo/Faixa) | arquivos IGC (junção por Código da IES) |
+
+**Aba `IES`** — uma linha por `Código da IES`, com Sigla/Nome/Organização/
+Categoria já normalizadas. Vem de `list_ies_final.xlsx` (fontes priorizadas:
+e-MEC > Censo > Indicadores), sem a coluna diagnóstica `complemento`. Para
+juntar com `Dados` no Excel: `=VLOOKUP([@[Código da IES]]; IES!A:E; n; 0)`.
 
 ## Decisões de projeto
 

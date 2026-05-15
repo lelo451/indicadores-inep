@@ -152,14 +152,23 @@ def _load_supplement() -> pd.DataFrame:
 def _load_indicadores() -> pd.DataFrame:
     """Carrega indicadores_consolidados.xlsx reduzido a uma linha por IES.
 
-    ``consolidar_indicadores.py`` já normaliza Nome/Sigla/Org./Categ. para o
-    valor do ano mais recente, então basta agregar com ``first()`` para pegar
-    o primeiro valor não-nulo por coluna em cada grupo de IES.
-
-    Também aplica ORG_ACAD_LEGACY_CODES para sanar códigos numéricos antigos
-    (ENADE 2004-2008) que escapam ao decodificador do consolidador.
+    Detecta o schema do arquivo:
+    - Se houver aba ``IES`` (saída de ``apply_to_indicadores``), lê dela
+      diretamente — a dimensão já está normalizada.
+    - Caso contrário (saída crua de ``consolidar_indicadores``), lê a aba
+      única, agrega com ``first()`` por código de IES, e aplica
+      ``ORG_ACAD_LEGACY_CODES`` para sanar códigos numéricos antigos
+      (ENADE 2004-2008) que escapam ao decodificador do consolidador.
     """
-    df = pd.read_excel(INDICADORES_XLSX)
+    xl = pd.ExcelFile(INDICADORES_XLSX)
+    if "IES" in xl.sheet_names:
+        df = pd.read_excel(xl, sheet_name="IES")
+        df = df.rename(columns=INDIC_RENAME)
+        df["codigo_ies"] = pd.to_numeric(df["codigo_ies"], errors="coerce").astype("Int64")
+        df = df.dropna(subset=["codigo_ies"])
+        return df[["codigo_ies", *INFO_COLS]].copy()
+
+    df = pd.read_excel(xl, sheet_name=xl.sheet_names[0])
     df = df.rename(columns=INDIC_RENAME)
     df["codigo_ies"] = pd.to_numeric(df["codigo_ies"], errors="coerce").astype("Int64")
     df = df.dropna(subset=["codigo_ies"])
@@ -169,85 +178,88 @@ def _load_indicadores() -> pd.DataFrame:
     return df.groupby("codigo_ies", as_index=False)[INFO_COLS].first()
 
 
-_INDIC_COL_MAP = {
-    "sigla": ("Sigla da IES", strip_double_quotes),
-    "nome": ("Nome da IES", title_case_with_connectors),
-    "organizacao": (
-        "Organização Acadêmica",
-        lambda v: map_canonical(v, ORG_ACAD_CANONICAL),
-    ),
-    "categoria": (
-        "Categoria Administrativa",
-        lambda v: strip_double_quotes(map_canonical(v, CATEG_ADMIN_CANONICAL)),
-    ),
+_IES_SHEET_RENAME = {
+    "codigo_ies": "Código da IES",
+    "sigla": "Sigla da IES",
+    "nome": "Nome da IES",
+    "organizacao": "Organização Acadêmica",
+    "categoria": "Categoria Administrativa",
 }
+
+_IES_SHEET_COLS = list(_IES_SHEET_RENAME.values())
+
+_IES_DROP_FROM_DADOS = [
+    "Sigla da IES",
+    "Organização Acadêmica",
+    "Categoria Administrativa",
+]
+
+
+def _build_ies_dimension(final_df: pd.DataFrame) -> pd.DataFrame:
+    """Constrói a dimensão IES a partir de ``list_ies_final``: aplica as
+    normalizações canônicas, descarta ``complemento`` e renomeia colunas
+    para os rótulos públicos. Sigla=='0' é convertida em NaN (sentinel)."""
+    ies = final_df.copy()
+    sigla = ies["sigla"].astype("string").str.strip()
+    ies.loc[sigla.isin(["0", "0.0"]), "sigla"] = pd.NA
+    ies["sigla"] = ies["sigla"].map(strip_double_quotes)
+    ies["nome"] = ies["nome"].map(title_case_with_connectors)
+    ies["organizacao"] = ies["organizacao"].map(
+        lambda v: map_canonical(v, ORG_ACAD_CANONICAL)
+    )
+    ies["categoria"] = (
+        ies["categoria"]
+        .map(lambda v: map_canonical(v, CATEG_ADMIN_CANONICAL))
+        .map(strip_double_quotes)
+    )
+    ies["codigo_ies"] = pd.to_numeric(ies["codigo_ies"], errors="coerce").astype("Int64")
+    ies = ies.dropna(subset=["codigo_ies"])
+    ies = ies.rename(columns=_IES_SHEET_RENAME)
+    return (
+        ies[_IES_SHEET_COLS]
+        .sort_values("Código da IES")
+        .reset_index(drop=True)
+    )
 
 
 def apply_to_indicadores(final_df: pd.DataFrame) -> None:
-    """Reaplica nome/sigla/org./categ. de ``list_ies_final`` em
-    ``indicadores_consolidados.xlsx``. Pula IES com ``complemento='i'``
-    (informação veio dos próprios indicadores — seria circular). Valores são
-    renormalizados após a cópia para preservar o estilo do arquivo destino."""
+    """Reorganiza ``indicadores_consolidados.xlsx`` em duas abas:
+
+    - **Dados**: granularidade de curso, sem as colunas Sigla/Organização/
+      Categoria (movidas para a dimensão IES). Nome da IES é refrescado a
+      partir da aba IES para garantir consistência referencial.
+    - **IES**: dimensão por Código da IES com sigla/nome/organização/
+      categoria já normalizadas. ``complemento`` (diagnóstico) é descartada.
+
+    Idempotente: se o arquivo já estiver no schema novo, reescreve usando
+    os valores atuais de ``list_ies_final``.
+    """
     if not INDICADORES_XLSX.exists():
         print(f"  {INDICADORES_XLSX.name} não encontrado — pulando.")
         return
 
-    valid = final_df[final_df["complemento"] != "i"].copy()
-    valid["codigo_ies"] = pd.to_numeric(valid["codigo_ies"], errors="coerce").astype("Int64")
-    valid = valid.dropna(subset=["codigo_ies"])
+    ies = _build_ies_dimension(final_df)
 
-    df_ind = pd.read_excel(INDICADORES_XLSX)
-    cod = pd.to_numeric(df_ind["Código da IES"], errors="coerce").astype("Int64")
+    xl = pd.ExcelFile(INDICADORES_XLSX)
+    dados_sheet = "Dados" if "Dados" in xl.sheet_names else xl.sheet_names[0]
+    dados = pd.read_excel(xl, sheet_name=dados_sheet)
 
-    # ORG_ACAD_LEGACY_CODES é aplicado independentemente do filtro de
-    # complemento — códigos como "3"/"6" são genéricos e não dependem da
-    # fonte. Caso contrário, IES com complemento='i' (ex.: 1985) ficariam
-    # com o código numérico no indicadores enquanto list_ies_final já o
-    # decodifica.
-    if "Organização Acadêmica" in df_ind.columns:
-        org_str = df_ind["Organização Acadêmica"].astype("string").str.strip()
-        legacy_mask = org_str.isin(ORG_ACAD_LEGACY_CODES.keys())
-        if legacy_mask.any():
-            decoded = org_str[legacy_mask].map(ORG_ACAD_LEGACY_CODES).map(
-                lambda v: map_canonical(v, ORG_ACAD_CANONICAL)
-            )
-            df_ind.loc[legacy_mask, "Organização Acadêmica"] = decoded
-            print(
-                f"  {int(legacy_mask.sum())} rótulo(s) Organização legados "
-                f"decodificados via ORG_ACAD_LEGACY_CODES"
-            )
+    nome_lookup = dict(zip(ies["Código da IES"], ies["Nome da IES"]))
+    cod = pd.to_numeric(dados["Código da IES"], errors="coerce").astype("Int64")
+    mapped_nome = cod.map(nome_lookup)
+    has_new = mapped_nome.notna()
+    dados.loc[has_new, "Nome da IES"] = mapped_nome[has_new]
 
-    # Sigla=='0' aparece como sentinel de "não informado" em edições antigas.
-    # Trata como ausente para que a lógica de fill abaixo o substitua quando
-    # houver replacement, ou o converta em NaN quando não houver.
-    sigla = df_ind["Sigla da IES"].astype("string").str.strip()
-    sentinel_mask = sigla.isin(["0", "0.0"])
-    if sentinel_mask.any():
-        df_ind.loc[sentinel_mask, "Sigla da IES"] = pd.NA
-        print(f"  {int(sentinel_mask.sum())} sigla(s) sentinel '0' convertidas em NaN")
+    dados = dados.drop(columns=[c for c in _IES_DROP_FROM_DADOS if c in dados.columns])
 
-    stats: dict[str, tuple[int, int]] = {}
-    for src, (tgt, normalize) in _INDIC_COL_MAP.items():
-        lookup = {
-            int(k): normalize(v)
-            for k, v in zip(valid["codigo_ies"], valid[src])
-            if pd.notna(v) and (not isinstance(v, str) or v.strip())
-        }
-        lookup = {k: v for k, v in lookup.items() if pd.notna(v)}
-        mapped = cod.map(lookup)
-        cur = df_ind[tgt].astype("string").str.strip()
-        cur_null = df_ind[tgt].isna() | cur.isin(["", "0", "0.0"])
-        has_new = mapped.notna()
-        filled = int((has_new & cur_null).sum())
-        updated = int((has_new & ~cur_null & (cur != mapped.astype("string").str.strip())).sum())
-        df_ind.loc[has_new, tgt] = mapped[has_new]
-        stats[tgt] = (filled, updated)
+    with pd.ExcelWriter(INDICADORES_XLSX, engine="openpyxl") as writer:
+        dados.to_excel(writer, sheet_name="Dados", index=False)
+        ies.to_excel(writer, sheet_name="IES", index=False)
 
-    df_ind.to_excel(INDICADORES_XLSX, index=False)
-    print(f"Reaplicado em {INDICADORES_XLSX.name}:")
-    print(f"  {'coluna':<28} {'preenchidas':>11} {'atualizadas':>11}")
-    for col, (f, u) in stats.items():
-        print(f"  {col:<28} {f:>11} {u:>11}")
+    print(f"Reorganizado em {INDICADORES_XLSX.name}:")
+    print(f"  Aba 'Dados': {len(dados):>6} linhas × {len(dados.columns):>2} colunas")
+    print(f"  Aba 'IES':   {len(ies):>6} linhas × {len(ies.columns):>2} colunas")
+    print(f"  Nome da IES refrescado em {int(has_new.sum())} linhas de Dados")
 
 
 def _supplement(base: pd.DataFrame, supp: pd.DataFrame, mask: pd.Series) -> None:
