@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
-"""Gera ``outputs/list_ies_final.xlsx`` combinando a base do e-MEC
-(``Microdados/ies_siglas.csv``) com a lista consolidada do Censo
-(``outputs/lista_ies_consolidada.xlsx``).
+"""Gera ``outputs/list_ies_final.xlsx`` combinando três fontes em ordem de
+prioridade:
 
-Regra:
-- Para cada IES da base, se ela tiver dados (sigla/nome/organização/categoria),
-  usamos a base e marcamos complemento = 'n'.
-- Caso a base não tenha dados (match_type = not_found), tentamos suplementar
-  com a planilha consolidada do Censo e marcamos complemento = 'y'.
+1. **e-MEC** (``Microdados/ies_siglas.csv``) — base oficial. Marca
+   ``complemento='n'`` quando a IES tem ao menos um campo preenchido.
+2. **Censo da Educação Superior** (``outputs/lista_ies_consolidada.xlsx``) —
+   suplementa coluna a coluna as IES que e-MEC retornou ``not_found``.
+   Marca ``complemento='y'`` se algum campo foi preenchido.
+3. **Indicadores INEP** (``outputs/indicadores_consolidados.xlsx``) — para
+   as IES que nem e-MEC nem Censo cobrem (descredenciadas, fundidas etc.),
+   recupera Nome/Sigla/Org./Categ. das edições de ENADE/CPC/IDD/IGC em que
+   a IES apareceu. Marca ``complemento='i'``.
 
 Limpeza:
 - Nomes do e-MEC frequentemente trazem anotações administrativas anexadas
@@ -22,7 +25,13 @@ import re
 
 import pandas as pd
 
-from ._common import BASE_CSV, CONSOLIDADA_XLSX, FINAL_XLSX, OUTPUTS_DIR
+from ._common import (
+    BASE_CSV,
+    CONSOLIDADA_XLSX,
+    FINAL_XLSX,
+    INDICADORES_XLSX,
+    OUTPUTS_DIR,
+)
 
 
 OUTPUT_COLS = [
@@ -42,6 +51,15 @@ BASE_RENAME = {
 
 SUPP_RENAME = {
     "Codigo da IES": "codigo_ies",
+    "Sigla da IES": "sigla",
+    "Nome da IES": "nome",
+    "Organização Acadêmica": "organizacao",
+    "Categoria Administrativa": "categoria",
+}
+
+# indicadores_consolidados.xlsx usa as mesmas colunas mas com "Código" acentuado.
+INDIC_RENAME = {
+    "Código da IES": "codigo_ies",
     "Sigla da IES": "sigla",
     "Nome da IES": "nome",
     "Organização Acadêmica": "organizacao",
@@ -122,6 +140,20 @@ def _load_supplement() -> pd.DataFrame:
     return df[["codigo_ies", *INFO_COLS]].copy()
 
 
+def _load_indicadores() -> pd.DataFrame:
+    """Carrega indicadores_consolidados.xlsx reduzido a uma linha por IES.
+
+    ``consolidar_indicadores.py`` já normaliza Nome/Sigla/Org./Categ. para o
+    valor do ano mais recente, então basta agregar com ``first()`` para pegar
+    o primeiro valor não-nulo por coluna em cada grupo de IES.
+    """
+    df = pd.read_excel(INDICADORES_XLSX)
+    df = df.rename(columns=INDIC_RENAME)
+    df["codigo_ies"] = pd.to_numeric(df["codigo_ies"], errors="coerce").astype("Int64")
+    df = df.dropna(subset=["codigo_ies"])
+    return df.groupby("codigo_ies", as_index=False)[INFO_COLS].first()
+
+
 def _supplement(base: pd.DataFrame, supp: pd.DataFrame, mask: pd.Series) -> None:
     """Preenche, in-place, colunas INFO_COLS de ``base`` nas linhas em ``mask``
     usando valores de ``supp`` indexado por codigo_ies."""
@@ -134,16 +166,26 @@ def _supplement(base: pd.DataFrame, supp: pd.DataFrame, mask: pd.Series) -> None
 def run() -> None:
     OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
     base = _load_base()
-    supp = _load_supplement().set_index("codigo_ies")
 
-    # 'n' quando a base tem ao menos um campo de informação; 'y' caso contrário.
+    # Tier 1: o que a base do e-MEC já trouxe → complemento='n'.
     has_base_info = base[INFO_COLS].notna().any(axis=1)
     base["complemento"] = has_base_info.map({True: "n", False: "y"})
 
-    # Suplementa apenas as linhas sem info na base, célula a célula.
-    missing_mask = ~has_base_info
-    if missing_mask.any():
-        _supplement(base, supp, missing_mask)
+    # Tier 2: suplemento do Censo para IES sem info na base.
+    missing_after_base = ~has_base_info
+    if missing_after_base.any():
+        supp_censo = _load_supplement().set_index("codigo_ies")
+        _supplement(base, supp_censo, missing_after_base)
+
+    # Tier 3: para IES que continuam sem nada, tenta indicadores_consolidados.
+    has_info_after_censo = base[INFO_COLS].notna().any(axis=1)
+    missing_after_censo = ~has_info_after_censo
+    if missing_after_censo.any():
+        supp_indic = _load_indicadores().set_index("codigo_ies")
+        _supplement(base, supp_indic, missing_after_censo)
+        # As linhas que ganharam dados agora vieram dos indicadores.
+        gained_from_indic = base[INFO_COLS].notna().any(axis=1) & missing_after_censo
+        base.loc[gained_from_indic, "complemento"] = "i"
 
     out = base[OUTPUT_COLS].copy()
 
@@ -154,16 +196,17 @@ def run() -> None:
 
     out.to_excel(FINAL_XLSX, index=False)
 
-    suplementadas = (out["complemento"] == "y").sum()
-    suplementadas_com_dados = (
-        (out["complemento"] == "y") & out[INFO_COLS].notna().any(axis=1)
-    ).sum()
+    has_info = out[INFO_COLS].notna().any(axis=1)
+    n_count = (out["complemento"] == "n").sum()
+    y_count = (out["complemento"] == "y").sum()
+    i_count = (out["complemento"] == "i").sum()
+    still_empty = (~has_info).sum()
     print(f"Arquivo gerado: {FINAL_XLSX}")
     print(f"  Total: {len(out)} linhas")
-    print(f"  complemento='n' (da base): {(out['complemento'] == 'n').sum()}")
-    print(f"  complemento='y' (suplementadas): {suplementadas}")
-    print(f"    destas, com dados após suplemento: {suplementadas_com_dados}")
-    print(f"    destas, ainda sem dados: {suplementadas - suplementadas_com_dados}")
+    print(f"  complemento='n' (e-MEC):       {n_count}")
+    print(f"  complemento='y' (Censo):       {y_count}")
+    print(f"  complemento='i' (Indicadores): {i_count}")
+    print(f"  Ainda sem dados: {still_empty}")
     print(f"  Limpeza de nomes: {chars_removed} caracteres removidos.")
 
     _report_long_names(out)

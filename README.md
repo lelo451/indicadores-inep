@@ -68,10 +68,21 @@ Cloudflare do e-MEC).
 
 ```
 dicionario.enade  ┐
-dicionario.idd    ┴─→ consolidar_indicadores  ─→ enrich_ies_sigla  ┐
-                                                                    ├─→ ies.final
-                                       ies.censo  ─────────────────┘
+dicionario.idd    ┴─→ consolidar_indicadores  ┬─→ enrich_ies_sigla ┐
+                                              │                     │
+                                              └──────────────────┐  ├─→ ies.final
+                                                                 │  │
+                                                  ies.censo  ────┴──┘
 ```
+
+`ies.final` combina três fontes em ordem de prioridade:
+
+1. **e-MEC** (`Microdados/ies_siglas.csv`) — base oficial, marca `complemento='n'`.
+2. **Censo da Educação Superior** (`outputs/lista_ies_consolidada.xlsx`) —
+   para IES com `match_type=not_found` no e-MEC. Marca `complemento='y'`.
+3. **Indicadores INEP** (`outputs/indicadores_consolidados.xlsx`) — recupera
+   metadados de IES descredenciadas/fundidas que nem e-MEC nem Censo cobrem.
+   Marca `complemento='i'`.
 
 Comandos, na ordem:
 
@@ -85,7 +96,7 @@ python consolidar_indicadores.py         # → outputs/indicadores_consolidados.
 # 3) Raspagem do e-MEC (usa a saída do passo 2 e/ou list_ies.csv)
 python enrich_ies_sigla.py               # → Microdados/ies_siglas.csv
 
-# 4) Lista mestra de IES (combina o cache do e-MEC com o Censo)
+# 4) Lista mestra de IES (combina e-MEC + Censo + Indicadores)
 python -m ies                            # → outputs/list_ies_final.xlsx
 ```
 

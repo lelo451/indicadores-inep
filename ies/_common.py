@@ -18,6 +18,9 @@ BASE_CSV = ROOT / "Microdados" / "ies_siglas.csv"
 OUTPUTS_DIR = ROOT / "outputs"
 CONSOLIDADA_XLSX = OUTPUTS_DIR / "lista_ies_consolidada.xlsx"
 FINAL_XLSX = OUTPUTS_DIR / "list_ies_final.xlsx"
+# Produzido por ``consolidar_indicadores.py``; usado como 3º nível de
+# suplemento por ``ies.final`` para IES que e-MEC e Censo não cobrem.
+INDICADORES_XLSX = OUTPUTS_DIR / "indicadores_consolidados.xlsx"
 
 
 def normalize_code(series: pd.Series) -> pd.Series:
