@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SRC_DIR = ROOT / "Lista INEP Censo Superior"
 WHITELIST_CSV = ROOT / "list_ies.csv"
 BASE_CSV = ROOT / "Microdados" / "ies_siglas.csv"
+MUNICIPIOS_CSV = ROOT / "Microdados" / "municipios.csv"
 
 # Saídas do pipeline (todas as planilhas geradas vão para ``outputs/``).
 OUTPUTS_DIR = ROOT / "outputs"

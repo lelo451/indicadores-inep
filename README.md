@@ -113,12 +113,13 @@ gravados — podem ser executados de qualquer `cwd`.
 
 ## Indicadores consolidados
 
-O arquivo `indicadores_consolidados.xlsx` tem duas abas:
+O arquivo `indicadores_consolidados.xlsx` tem três abas:
 
 **Aba `Dados`** — granularidade de curso (Ano + Código do Curso, com
-LEFT JOIN de IGC por Código da IES). Sigla, Organização e Categoria foram
-movidas para a dimensão `IES`; apenas `Código da IES` (chave) e `Nome da
-IES` (refrescado da aba `IES`) ficam inline.
+LEFT JOIN de IGC por Código da IES). Atributos da IES (Sigla/Organização/
+Categoria) e do município (Sigla da UF) ficam apenas nas respectivas
+dimensões. Nome da IES e Município do Curso permanecem inline mas são
+refrescados das abas dimensionais para consistência referencial.
 
 | Coluna | Origem |
 | --- | --- |
@@ -127,7 +128,7 @@ IES` (refrescado da aba `IES`) ficam inline.
 | Grau Acadêmico | arquivos 2018+ |
 | Código da IES, Nome da IES | todos (Nome refrescado da aba `IES`) |
 | Código do Curso, Modalidade de Ensino | ENADE/CPC/IDD pós-2014 |
-| Código do Município, Município do Curso, Sigla da UF | todos (município preenchido por catálogo IBGE quando faltava) |
+| Código do Município, Município do Curso | todos (Nome refrescado da aba `Municípios`) |
 | Conceito Enade (Contínuo/Faixa) | arquivos ENADE e enade_cpc |
 | CPC (Contínuo/Faixa) | arquivos CPC e enade_cpc |
 | IDD (Contínuo/Faixa) | arquivos IDD; o Contínuo também vem de `Nota IDD` em CPCs antigos |
@@ -135,8 +136,15 @@ IES` (refrescado da aba `IES`) ficam inline.
 
 **Aba `IES`** — uma linha por `Código da IES`, com Sigla/Nome/Organização/
 Categoria já normalizadas. Vem de `list_ies_final.xlsx` (fontes priorizadas:
-e-MEC > Censo > Indicadores), sem a coluna diagnóstica `complemento`. Para
-juntar com `Dados` no Excel: `=VLOOKUP([@[Código da IES]]; IES!A:E; n; 0)`.
+e-MEC > Censo > Indicadores), sem a coluna diagnóstica `complemento`.
+
+**Aba `Municípios`** — uma linha por `Código do Município` presente em
+`Dados`, com Município do Curso (nome canônico IBGE) e Sigla da UF. Vem
+do catálogo `Microdados/municipios.csv`.
+
+Para juntar dimensões com `Dados` no Excel:
+`=VLOOKUP([@[Código da IES]]; IES!A:E; n; 0)` e
+`=VLOOKUP([@[Código do Município]]; Municípios!A:C; n; 0)`.
 
 ## Decisões de projeto
 

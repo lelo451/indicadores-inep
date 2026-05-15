@@ -39,6 +39,7 @@ from ._common import (
     CONSOLIDADA_XLSX,
     FINAL_XLSX,
     INDICADORES_XLSX,
+    MUNICIPIOS_CSV,
     OUTPUTS_DIR,
 )
 
@@ -194,6 +195,59 @@ _IES_DROP_FROM_DADOS = [
     "Categoria Administrativa",
 ]
 
+_MUNICIPIO_SHEET_COLS = [
+    "Código do Município",
+    "Município do Curso",
+    "Sigla da UF",
+]
+
+_MUNICIPIO_DROP_FROM_DADOS = ["Sigla da UF"]
+
+
+def _build_municipio_dimension(dados: pd.DataFrame) -> pd.DataFrame:
+    """Dimensão Município: uma linha por Código do Município presente em
+    Dados, com Nome e UF puxados do catálogo IBGE
+    (``Microdados/municipios.csv``)."""
+    if "Código do Município" not in dados.columns:
+        return pd.DataFrame(columns=_MUNICIPIO_SHEET_COLS)
+
+    mun = pd.read_csv(MUNICIPIOS_CSV, dtype=str)
+    code_col = next(c for c in mun.columns
+                    if "CÓDIGO" in c.upper() and "IBGE" in c.upper())
+    name_col = next(c for c in mun.columns
+                    if "MUNIC" in c.upper() and "IBGE" in c.upper()
+                    and "CÓDIGO" not in c.upper())
+    code_to_name = dict(zip(mun[code_col].str.strip(),
+                            mun[name_col].fillna("").str.strip()))
+    code_to_uf = dict(zip(mun[code_col].str.strip(),
+                          mun["UF"].fillna("").str.strip()))
+
+    def _norm_code(value):
+        if pd.isna(value):
+            return None
+        s = str(value).strip()
+        return s[:-2] if s.endswith(".0") else s
+
+    used = (
+        dados["Código do Município"]
+        .dropna()
+        .map(_norm_code)
+        .dropna()
+        .drop_duplicates()
+        .sort_values()
+        .reset_index(drop=True)
+    )
+    out = pd.DataFrame({"Código do Município": used})
+    out["Município do Curso"] = out["Código do Município"].map(code_to_name)
+    out["Sigla da UF"] = out["Código do Município"].map(code_to_uf)
+    out = out[
+        out["Município do Curso"].notna() & (out["Município do Curso"] != "")
+    ].reset_index(drop=True)
+    out["Código do Município"] = pd.to_numeric(
+        out["Código do Município"], errors="coerce"
+    ).astype("Int64")
+    return out[_MUNICIPIO_SHEET_COLS]
+
 
 def _build_ies_dimension(final_df: pd.DataFrame) -> pd.DataFrame:
     """Constrói a dimensão IES a partir de ``list_ies_final``: aplica as
@@ -223,16 +277,17 @@ def _build_ies_dimension(final_df: pd.DataFrame) -> pd.DataFrame:
 
 
 def apply_to_indicadores(final_df: pd.DataFrame) -> None:
-    """Reorganiza ``indicadores_consolidados.xlsx`` em duas abas:
+    """Reorganiza ``indicadores_consolidados.xlsx`` em três abas:
 
-    - **Dados**: granularidade de curso, sem as colunas Sigla/Organização/
-      Categoria (movidas para a dimensão IES). Nome da IES é refrescado a
-      partir da aba IES para garantir consistência referencial.
-    - **IES**: dimensão por Código da IES com sigla/nome/organização/
-      categoria já normalizadas. ``complemento`` (diagnóstico) é descartada.
+    - **Dados**: granularidade de curso. Mantém Código da IES + Nome da IES
+      (refrescado da aba IES) e Código do Município + Município do Curso
+      (refrescado da aba Municípios). Sigla/Organização/Categoria (IES) e
+      Sigla da UF (município) ficam apenas nas respectivas dimensões.
+    - **IES**: dimensão por Código da IES (sigla/nome/organização/categoria).
+    - **Municípios**: dimensão por Código do Município (nome + UF), do
+      catálogo IBGE, restrita aos códigos presentes em Dados.
 
-    Idempotente: se o arquivo já estiver no schema novo, reescreve usando
-    os valores atuais de ``list_ies_final``.
+    Idempotente.
     """
     if not INDICADORES_XLSX.exists():
         print(f"  {INDICADORES_XLSX.name} não encontrado — pulando.")
@@ -244,22 +299,45 @@ def apply_to_indicadores(final_df: pd.DataFrame) -> None:
     dados_sheet = "Dados" if "Dados" in xl.sheet_names else xl.sheet_names[0]
     dados = pd.read_excel(xl, sheet_name=dados_sheet)
 
-    nome_lookup = dict(zip(ies["Código da IES"], ies["Nome da IES"]))
-    cod = pd.to_numeric(dados["Código da IES"], errors="coerce").astype("Int64")
-    mapped_nome = cod.map(nome_lookup)
-    has_new = mapped_nome.notna()
-    dados.loc[has_new, "Nome da IES"] = mapped_nome[has_new]
+    municipios = _build_municipio_dimension(dados)
 
-    dados = dados.drop(columns=[c for c in _IES_DROP_FROM_DADOS if c in dados.columns])
+    nome_lookup = dict(zip(ies["Código da IES"], ies["Nome da IES"]))
+    dados["Código da IES"] = pd.to_numeric(
+        dados["Código da IES"], errors="coerce"
+    ).astype("Int64")
+    mapped_nome = dados["Código da IES"].map(nome_lookup)
+    ies_nome_hits = mapped_nome.notna()
+    dados.loc[ies_nome_hits, "Nome da IES"] = mapped_nome[ies_nome_hits]
+
+    mun_nome_hits = pd.Series(False, index=dados.index)
+    if "Código do Município" in dados.columns and not municipios.empty:
+        dados["Código do Município"] = pd.to_numeric(
+            dados["Código do Município"], errors="coerce"
+        ).astype("Int64")
+        mun_lookup = dict(zip(
+            municipios["Código do Município"],
+            municipios["Município do Curso"],
+        ))
+        mapped_mun = dados["Código do Município"].map(mun_lookup)
+        mun_nome_hits = mapped_mun.notna()
+        dados.loc[mun_nome_hits, "Município do Curso"] = mapped_mun[mun_nome_hits]
+
+    drop_cols = _IES_DROP_FROM_DADOS + _MUNICIPIO_DROP_FROM_DADOS
+    dados = dados.drop(columns=[c for c in drop_cols if c in dados.columns])
 
     with pd.ExcelWriter(INDICADORES_XLSX, engine="openpyxl") as writer:
         dados.to_excel(writer, sheet_name="Dados", index=False)
         ies.to_excel(writer, sheet_name="IES", index=False)
+        municipios.to_excel(writer, sheet_name="Municípios", index=False)
 
     print(f"Reorganizado em {INDICADORES_XLSX.name}:")
-    print(f"  Aba 'Dados': {len(dados):>6} linhas × {len(dados.columns):>2} colunas")
-    print(f"  Aba 'IES':   {len(ies):>6} linhas × {len(ies.columns):>2} colunas")
-    print(f"  Nome da IES refrescado em {int(has_new.sum())} linhas de Dados")
+    print(f"  Aba 'Dados':      {len(dados):>6} linhas × {len(dados.columns):>2} colunas")
+    print(f"  Aba 'IES':        {len(ies):>6} linhas × {len(ies.columns):>2} colunas")
+    print(f"  Aba 'Municípios': {len(municipios):>6} linhas × {len(municipios.columns):>2} colunas")
+    print(
+        f"  Nome da IES refrescado em {int(ies_nome_hits.sum())} linhas; "
+        f"Município do Curso em {int(mun_nome_hits.sum())} linhas"
+    )
 
 
 def _supplement(base: pd.DataFrame, supp: pd.DataFrame, mask: pd.Series) -> None:
