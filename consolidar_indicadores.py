@@ -51,9 +51,10 @@ warnings.filterwarnings("ignore")
 
 DATA_ROOT = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(DATA_ROOT, "data")
-DICT_ENADE = os.path.join(DATA_ROOT, "dicionario_enade_consolidado.xlsx")
-DICT_IDD = os.path.join(DATA_ROOT, "dicionario_idd_consolidado.xlsx")
-OUTPUT = os.path.join(DATA_ROOT, "indicadores_consolidados.xlsx")
+OUTPUTS_DIR = os.path.join(DATA_ROOT, "outputs")
+DICT_ENADE = os.path.join(OUTPUTS_DIR, "dicionario_enade_consolidado.xlsx")
+DICT_IDD = os.path.join(OUTPUTS_DIR, "dicionario_idd_consolidado.xlsx")
+OUTPUT = os.path.join(OUTPUTS_DIR, "indicadores_consolidados.xlsx")
 
 TARGETS = [
     "Ano", "Código da Área", "Área de Avaliação", "Grau Acadêmico",
@@ -740,6 +741,7 @@ def main() -> None:
     sort_keys = [k for k in ("Ano", "Código da IES", "Código do Curso") if k in courses.columns]
     courses = courses.sort_values(sort_keys, na_position="last").reset_index(drop=True)
 
+    os.makedirs(OUTPUTS_DIR, exist_ok=True)
     print(f"\nWriting {len(courses)} rows to {OUTPUT}...")
     courses.to_excel(OUTPUT, index=False)
 

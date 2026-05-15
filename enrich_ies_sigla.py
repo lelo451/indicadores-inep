@@ -44,7 +44,7 @@ from pathlib import Path
 import pandas as pd
 
 DATA_ROOT = Path(__file__).parent.resolve()
-INDICADORES = DATA_ROOT / "indicadores_consolidados.xlsx"
+INDICADORES = DATA_ROOT / "outputs" / "indicadores_consolidados.xlsx"
 CACHE = DATA_ROOT / "Microdados" / "ies_siglas.csv"
 
 EMEC_FORM = "https://emec.mec.gov.br/emec/nova#avancada"
@@ -53,12 +53,28 @@ EMEC_DETAIL = (
     "d96957f455f6405d14c6542552b0f6eb/{b64}"
 )
 
-# Notas administrativas que o e-MEC anexa depois da sigla na célula de nome
+# Notas administrativas que o e-MEC anexa depois da sigla na célula de nome.
+# Inclui tanto os marcadores históricos do e-MEC quanto os marcadores de
+# supervisão/sanção que aparecem no formato consolidado do Censo.
 ADMIN_NOTE_RE = re.compile(
-    r"\s+(?:Unifica[çc][ãa]o|Ades[ãa]o|Extinta|Processo n|Transformada|Migra[çc][ãa]o|"
-    r"Recredenciament|Credenciament|Situa[çc][ãa]o)\b.*$",
-    re.IGNORECASE,
+    r"\s+(?:"
+    r"Unifica[çc][ãa]o|Ades[ãa]o|Extinta|Processo\s+n|Transformada|"
+    r"Migra[çc][ãa]o|Recredenciament|Credenciament|Situa[çc][ãa]o|"
+    r"Em\s+supervis[ãa]o|"
+    r"Suspens[ãa]o\s+(?:contrato\s+FIES|PROUNI|PRONATEC|de\s+ingresso|"
+    r"de\s+autonomia|das?\s+prerrogativas)|"
+    r"Em\s+descredenciamento\s+volunt[áa]rio|"
+    r"Descredenciada|"
+    r"Acervo\s+Acad[êe]mico|"
+    r"Sub\s+Judice|"
+    r"Veda[çc][ãa]o\s+de"
+    r")\b.*$",
+    re.IGNORECASE | re.DOTALL,
 )
+
+# Prefixo "(N) " (com eventual ruído antes) que o e-MEC às vezes injeta na
+# célula de nome — descartamos qualquer coisa até o "(N) " inclusive.
+NAME_CODE_PREFIX_RE = re.compile(r"^.*?\(\d+\)\s*", re.DOTALL)
 
 
 def _encode_code(code) -> str:
@@ -206,7 +222,9 @@ def _parse_result_row(tr) -> dict | None:
                 return None
         else:
             return None
-    # Strip the admin notes that eMEC concatenates onto the name cell
+    # Strip ruído antes do "(N) " (caso o e-MEC tenha injetado prefixo) e
+    # as notas administrativas que ele concatena após o nome.
+    nome = NAME_CODE_PREFIX_RE.sub("", nome, count=1).strip()
     nome = ADMIN_NOTE_RE.sub("", nome).strip()
     nome = re.sub(r"\s*-\s*$", "", nome).strip()
     sigla = tds[1].get_text(" ", strip=True)

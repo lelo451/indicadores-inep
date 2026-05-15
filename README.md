@@ -9,10 +9,21 @@ IDD.
 
 ```
 .
+├── normalizacao.py                  # Tabelas canônicas + helpers de texto (shared)
 ├── consolidar_indicadores.py        # Consolida todos os arquivos de data/
-├── consolidar_dicionario_enade.py   # Consolida dicionários ENADE
-├── consolidar_dicionario_idd.py     # Consolida dicionários IDD
-├── dicionario_comum.py              # Módulo compartilhado entre os dois acima
+├── enrich_ies_sigla.py              # Raspa sigla/org./categoria do e-MEC
+│
+├── dicionario/                      # Pacote: consolidação dos dicionários INEP
+│   ├── __init__.py                  #   engine de parsing
+│   ├── enade.py                     #   entry point ENADE
+│   ├── idd.py                       #   entry point IDD
+│   └── __main__.py                  #   roda os dois (python -m dicionario)
+│
+├── ies/                             # Pacote: lista mestra de IES
+│   ├── _common.py                   #   caminhos e helpers
+│   ├── censo.py                     #   etapa 1: consolida Censo Superior
+│   ├── final.py                     #   etapa 2: mescla e-MEC + Censo
+│   └── __main__.py                  #   roda as duas etapas (python -m ies)
 │
 ├── data/                            # Planilhas de indicadores (renomeadas)
 │   ├── IGC_2007.xlsx … IGC_2023.xlsx
@@ -25,31 +36,58 @@ IDD.
 │   ├── enade/dicionarios enade YYYY.xlsx
 │   ├── idd/dicionarios idd YYYY.xls(x)
 │   ├── municipios.csv               # Catálogo IBGE (códigos + nomes)
-│   └── municipios_enade.csv
+│   ├── municipios_enade.csv
+│   └── ies_siglas.csv               # Cache gerado por enrich_ies_sigla.py
 │
-├── dicionario_enade_consolidado.xlsx     # Saída do consolidador ENADE
-├── dicionario_idd_consolidado.xlsx       # Saída do consolidador IDD
-└── indicadores_consolidados.xlsx         # Saída do consolidador principal
+├── Lista INEP Censo Superior/       # Listas anuais do Censo (input do ies.censo)
+│   └── Lista_de_IES_YYYY.xlsx
+│
+├── list_ies.csv                     # Whitelist de IES (input)
+│
+└── outputs/                         # Todos os artefatos gerados
+    ├── dicionario_enade_consolidado.xlsx
+    ├── dicionario_idd_consolidado.xlsx
+    ├── indicadores_consolidados.xlsx
+    ├── lista_ies_consolidada.xlsx
+    └── list_ies_final.xlsx
 ```
 
 ## Como rodar
 
-Requer Python 3.10+ com `pandas`, `openpyxl` e `xlrd` (para arquivos `.xls`):
+Requer Python 3.10+. Instale as dependências com:
 
 ```bash
-pip install pandas openpyxl xlrd
+pip install -r requirements.txt
 ```
 
-Os três scripts são independentes. Rode na ordem:
+`undetected-chromedriver`, `selenium` e `beautifulsoup4` só são necessários se
+você for rodar o `enrich_ies_sigla.py` (que abre um Chrome real para passar do
+Cloudflare do e-MEC).
+
+### Pipeline (ordem de dependência)
+
+```
+dicionario.enade  ┐
+dicionario.idd    ┴─→ consolidar_indicadores  ─→ enrich_ies_sigla  ┐
+                                                                    ├─→ ies.final
+                                       ies.censo  ─────────────────┘
+```
+
+Comandos, na ordem:
 
 ```bash
-python3 consolidar_dicionario_enade.py   # gera dicionario_enade_consolidado.xlsx
-python3 consolidar_dicionario_idd.py     # gera dicionario_idd_consolidado.xlsx
-python3 consolidar_indicadores.py        # gera indicadores_consolidados.xlsx
-```
+# 1) Dicionários do INEP (ENADE + IDD)
+python -m dicionario                     # ou: python -m dicionario.enade / .idd
 
-O consolidador principal usa os dois dicionários para decodificar variáveis
-codificadas (`co_grupo`, `co_categad`, etc.) presentes em arquivos antigos.
+# 2) Indicadores (usa os dicionários do passo 1)
+python consolidar_indicadores.py         # → outputs/indicadores_consolidados.xlsx
+
+# 3) Raspagem do e-MEC (usa a saída do passo 2 e/ou list_ies.csv)
+python enrich_ies_sigla.py               # → Microdados/ies_siglas.csv
+
+# 4) Lista mestra de IES (combina o cache do e-MEC com o Censo)
+python -m ies                            # → outputs/list_ies_final.xlsx
+```
 
 Todos os scripts resolvem caminhos relativos a partir do diretório onde estão
 gravados — podem ser executados de qualquer `cwd`.

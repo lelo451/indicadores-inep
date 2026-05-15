@@ -1,0 +1,9 @@
+# Núcleo: usado por todos os consolidadores.
+pandas
+openpyxl
+xlrd  # para arquivos .xls antigos do INEP
+
+# Apenas para enrich_ies_sigla.py (raspagem do e-MEC).
+undetected-chromedriver
+selenium
+beautifulsoup4

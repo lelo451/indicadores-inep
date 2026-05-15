@@ -28,11 +28,12 @@ Thumbs.db
 .vscode/
 *.iml
 
+# Local agent data
+.claude/
+
 # Raw data (large; uncomment if you don't want to track it in git)
 # data/
 # Microdados/
 
 # Generated consolidations (uncomment if you'd rather regenerate from source)
-# dicionario_enade_consolidado.xlsx
-# dicionario_idd_consolidado.xlsx
-# indicadores_consolidados.xlsx
+# outputs/
