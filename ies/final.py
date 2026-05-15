@@ -122,6 +122,15 @@ def _load_supplement() -> pd.DataFrame:
     return df[["codigo_ies", *INFO_COLS]].copy()
 
 
+def _supplement(base: pd.DataFrame, supp: pd.DataFrame, mask: pd.Series) -> None:
+    """Preenche, in-place, colunas INFO_COLS de ``base`` nas linhas em ``mask``
+    usando valores de ``supp`` indexado por codigo_ies."""
+    codes = base.loc[mask, "codigo_ies"]
+    for col in INFO_COLS:
+        if col in supp.columns:
+            base.loc[mask, col] = codes.map(supp[col])
+
+
 def run() -> None:
     OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
     base = _load_base()
@@ -134,10 +143,7 @@ def run() -> None:
     # Suplementa apenas as linhas sem info na base, célula a célula.
     missing_mask = ~has_base_info
     if missing_mask.any():
-        codes = base.loc[missing_mask, "codigo_ies"]
-        for col in INFO_COLS:
-            values = codes.map(supp[col]) if col in supp.columns else None
-            base.loc[missing_mask, col] = values
+        _supplement(base, supp, missing_mask)
 
     out = base[OUTPUT_COLS].copy()
 
