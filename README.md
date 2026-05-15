@@ -140,13 +140,15 @@ LEFT JOIN com o IGC no nível de IES.
   (`co_grupo=5` em vez de "Medicina Veterinária"). O consolidador usa as
   planilhas de dicionário do INEP (consolidadas previamente) para preencher os
   rótulos.
-- **IES normalizada via list_ies_final.** Nome/Sigla/Categoria/Organização
-  de cada `Código da IES` são unificados em todas as linhas pela etapa 3 de
-  `ies.final` (que reaplica os valores de `list_ies_final.xlsx` no indicadores),
-  usando e-MEC e Censo como fontes prioritárias. Assim, "CEFET/PR" (2004) e
-  "UTFPR" (2010+) — ambos IES código 588 — aparecem como UTFPR/Universidade/
-  Pública Federal em todas as linhas. IES marcadas com `complemento='i'`
-  (descredenciadas/fundidas) são puladas para evitar circularidade.
+- **IES normalizada em duas camadas.** Nome/Sigla/Categoria/Organização de
+  cada `Código da IES` são unificados em todas as linhas. Primeiro
+  `normalize_ies_metadata` propaga o valor do ano mais recente dentro do
+  próprio indicadores (faz "CEFET/PR" 2004 virar UTFPR como em 2010+).
+  Depois a etapa 3 de `ies.final` sobrescreve com `list_ies_final.xlsx`
+  (priorizando e-MEC > Censo). IES marcadas com `complemento='i'` em
+  `list_ies_final` (descredenciadas/fundidas) são puladas nessa segunda
+  camada para evitar circularidade — para essas, prevalece o valor do
+  ano-mais-recente da primeira camada.
 - **IGC multi-aba.** Arquivos IGC pré-2017 dividem os dados por organização
   acadêmica em abas separadas (Universidades, Centros Universitários,
   Faculdades). A consolidação lê todas as abas relevantes e injeta a

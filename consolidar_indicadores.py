@@ -634,6 +634,38 @@ def normalize_text_columns(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def normalize_ies_metadata(df: pd.DataFrame) -> pd.DataFrame:
+    """Para cada Código da IES, sobrescreve Nome/Sigla/Categoria/Organização
+    com os valores do ano mais recente em que estavam preenchidos. Unifica
+    todas as linhas da mesma IES sob uma única identidade canônica.
+
+    Para IES com ``complemento != 'i'`` em ``list_ies_final``, a etapa 3 de
+    ``ies.final.apply_to_indicadores`` reescreve esses campos de novo
+    (fontes melhores: e-MEC > Censo). Esta normalização ainda é necessária
+    para o "tail" das 110 IES com ``complemento='i'`` (descredenciadas/
+    fundidas), que ``apply_to_indicadores`` deliberadamente pula."""
+    ies_cols = ["Nome da IES", "Sigla da IES",
+                "Categoria Administrativa", "Organização Acadêmica"]
+    ies_cols = [c for c in ies_cols if c in df.columns]
+    if not ies_cols or "Código da IES" not in df.columns or "Ano" not in df.columns:
+        return df
+
+    sorted_df = df.sort_values("Ano", ascending=False)
+    changes = {}
+    for col in ies_cols:
+        latest = (
+            sorted_df.dropna(subset=[col])
+            .drop_duplicates(subset=["Código da IES"], keep="first")
+            .set_index("Código da IES")[col]
+        )
+        changes[col] = latest
+    code_series = df["Código da IES"]
+    for col, latest in changes.items():
+        mapped = code_series.map(latest)
+        df[col] = mapped.where(mapped.notna(), df[col])
+    return df
+
+
 def main() -> None:
     print("Loading data files...")
     course_dfs, igc_dfs = collect_all()
@@ -705,6 +737,9 @@ def main() -> None:
 
     print("\nFilling Organização/Categoria from eMEC cache (if present)...")
     courses = fill_org_categ_from_cache(courses)
+
+    print("\nNormalizing IES metadata to latest year per Código da IES...")
+    courses = normalize_ies_metadata(courses)
 
     print("\nNormalizing Organização/Categoria labels and IES name casing...")
     courses = normalize_text_columns(courses)
