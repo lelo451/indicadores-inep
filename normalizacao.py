@@ -30,8 +30,13 @@ PORTUGUESE_CONNECTORS = {
 
 # Códigos numéricos legados de CO_ORGACAD que escapam ao decodificador do
 # consolidar_indicadores (cujo dicionário só cataloga códigos modernos
-# 10019/10020/10022/...). Aparecem em ENADE 2004-2008.
+# 10019/10020/10022/...). Aparecem em ENADE 2004-2008. Só códigos
+# *consistentes* — onde toda IES afetada confirma o mesmo mapeamento via
+# Censo ou e-MEC — entram aqui. Códigos ambíguos (5, 7, 8, 9) foram
+# deixados de fora porque o mesmo número foi usado para org. diferentes
+# em IES diferentes nas fontes legadas.
 ORG_ACAD_LEGACY_CODES = {
+    "3": "Centro Universitário",
     "6": "Faculdade",
 }
 
