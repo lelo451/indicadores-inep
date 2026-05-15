@@ -25,7 +25,14 @@ import re
 
 import pandas as pd
 
-from normalizacao import ORG_ACAD_LEGACY_CODES
+from normalizacao import (
+    CATEG_ADMIN_CANONICAL,
+    ORG_ACAD_CANONICAL,
+    ORG_ACAD_LEGACY_CODES,
+    map_canonical,
+    strip_double_quotes,
+    title_case_with_connectors,
+)
 
 from ._common import (
     BASE_CSV,
@@ -162,6 +169,87 @@ def _load_indicadores() -> pd.DataFrame:
     return df.groupby("codigo_ies", as_index=False)[INFO_COLS].first()
 
 
+_INDIC_COL_MAP = {
+    "sigla": ("Sigla da IES", strip_double_quotes),
+    "nome": ("Nome da IES", title_case_with_connectors),
+    "organizacao": (
+        "Organização Acadêmica",
+        lambda v: map_canonical(v, ORG_ACAD_CANONICAL),
+    ),
+    "categoria": (
+        "Categoria Administrativa",
+        lambda v: strip_double_quotes(map_canonical(v, CATEG_ADMIN_CANONICAL)),
+    ),
+}
+
+
+def apply_to_indicadores(final_df: pd.DataFrame) -> None:
+    """Reaplica nome/sigla/org./categ. de ``list_ies_final`` em
+    ``indicadores_consolidados.xlsx``. Pula IES com ``complemento='i'``
+    (informação veio dos próprios indicadores — seria circular). Valores são
+    renormalizados após a cópia para preservar o estilo do arquivo destino."""
+    if not INDICADORES_XLSX.exists():
+        print(f"  {INDICADORES_XLSX.name} não encontrado — pulando.")
+        return
+
+    valid = final_df[final_df["complemento"] != "i"].copy()
+    valid["codigo_ies"] = pd.to_numeric(valid["codigo_ies"], errors="coerce").astype("Int64")
+    valid = valid.dropna(subset=["codigo_ies"])
+
+    df_ind = pd.read_excel(INDICADORES_XLSX)
+    cod = pd.to_numeric(df_ind["Código da IES"], errors="coerce").astype("Int64")
+
+    # ORG_ACAD_LEGACY_CODES é aplicado independentemente do filtro de
+    # complemento — códigos como "3"/"6" são genéricos e não dependem da
+    # fonte. Caso contrário, IES com complemento='i' (ex.: 1985) ficariam
+    # com o código numérico no indicadores enquanto list_ies_final já o
+    # decodifica.
+    if "Organização Acadêmica" in df_ind.columns:
+        org_str = df_ind["Organização Acadêmica"].astype("string").str.strip()
+        legacy_mask = org_str.isin(ORG_ACAD_LEGACY_CODES.keys())
+        if legacy_mask.any():
+            decoded = org_str[legacy_mask].map(ORG_ACAD_LEGACY_CODES).map(
+                lambda v: map_canonical(v, ORG_ACAD_CANONICAL)
+            )
+            df_ind.loc[legacy_mask, "Organização Acadêmica"] = decoded
+            print(
+                f"  {int(legacy_mask.sum())} rótulo(s) Organização legados "
+                f"decodificados via ORG_ACAD_LEGACY_CODES"
+            )
+
+    # Sigla=='0' aparece como sentinel de "não informado" em edições antigas.
+    # Trata como ausente para que a lógica de fill abaixo o substitua quando
+    # houver replacement, ou o converta em NaN quando não houver.
+    sigla = df_ind["Sigla da IES"].astype("string").str.strip()
+    sentinel_mask = sigla.isin(["0", "0.0"])
+    if sentinel_mask.any():
+        df_ind.loc[sentinel_mask, "Sigla da IES"] = pd.NA
+        print(f"  {int(sentinel_mask.sum())} sigla(s) sentinel '0' convertidas em NaN")
+
+    stats: dict[str, tuple[int, int]] = {}
+    for src, (tgt, normalize) in _INDIC_COL_MAP.items():
+        lookup = {
+            int(k): normalize(v)
+            for k, v in zip(valid["codigo_ies"], valid[src])
+            if pd.notna(v) and (not isinstance(v, str) or v.strip())
+        }
+        lookup = {k: v for k, v in lookup.items() if pd.notna(v)}
+        mapped = cod.map(lookup)
+        cur = df_ind[tgt].astype("string").str.strip()
+        cur_null = df_ind[tgt].isna() | cur.isin(["", "0", "0.0"])
+        has_new = mapped.notna()
+        filled = int((has_new & cur_null).sum())
+        updated = int((has_new & ~cur_null & (cur != mapped.astype("string").str.strip())).sum())
+        df_ind.loc[has_new, tgt] = mapped[has_new]
+        stats[tgt] = (filled, updated)
+
+    df_ind.to_excel(INDICADORES_XLSX, index=False)
+    print(f"Reaplicado em {INDICADORES_XLSX.name}:")
+    print(f"  {'coluna':<28} {'preenchidas':>11} {'atualizadas':>11}")
+    for col, (f, u) in stats.items():
+        print(f"  {col:<28} {f:>11} {u:>11}")
+
+
 def _supplement(base: pd.DataFrame, supp: pd.DataFrame, mask: pd.Series) -> None:
     """Preenche, in-place, colunas INFO_COLS de ``base`` nas linhas em ``mask``
     usando valores de ``supp`` indexado por codigo_ies."""
@@ -220,5 +308,16 @@ def run() -> None:
     _report_long_names(out)
 
 
+def run_apply() -> None:
+    """Lê ``list_ies_final.xlsx`` do disco e aplica em
+    ``indicadores_consolidados.xlsx``. Usado como etapa separada quando
+    ``list_ies_final`` já existe."""
+    if not FINAL_XLSX.exists():
+        print(f"{FINAL_XLSX.name} não encontrado — rode `ies.final.run` antes.")
+        return
+    apply_to_indicadores(pd.read_excel(FINAL_XLSX))
+
+
 if __name__ == "__main__":
     run()
+    apply_to_indicadores(pd.read_excel(FINAL_XLSX))
