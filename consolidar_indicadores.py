@@ -634,32 +634,6 @@ def normalize_text_columns(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def normalize_ies_metadata(df: pd.DataFrame) -> pd.DataFrame:
-    """For each Código da IES, overwrite Nome/Sigla/Categoria/Organização
-    with the values from the most recent year that has them non-null.
-    Groups all rows of the same IES under a single canonical identity."""
-    ies_cols = ["Nome da IES", "Sigla da IES",
-                "Categoria Administrativa", "Organização Acadêmica"]
-    ies_cols = [c for c in ies_cols if c in df.columns]
-    if not ies_cols or "Código da IES" not in df.columns or "Ano" not in df.columns:
-        return df
-
-    sorted_df = df.sort_values("Ano", ascending=False)
-    changes = {}
-    for col in ies_cols:
-        latest = (
-            sorted_df.dropna(subset=[col])
-            .drop_duplicates(subset=["Código da IES"], keep="first")
-            .set_index("Código da IES")[col]
-        )
-        changes[col] = latest
-    code_series = df["Código da IES"]
-    for col, latest in changes.items():
-        mapped = code_series.map(latest)
-        df[col] = mapped.where(mapped.notna(), df[col])
-    return df
-
-
 def main() -> None:
     print("Loading data files...")
     course_dfs, igc_dfs = collect_all()
@@ -731,9 +705,6 @@ def main() -> None:
 
     print("\nFilling Organização/Categoria from eMEC cache (if present)...")
     courses = fill_org_categ_from_cache(courses)
-
-    print("\nNormalizing IES metadata to latest year per Código da IES...")
-    courses = normalize_ies_metadata(courses)
 
     print("\nNormalizing Organização/Categoria labels and IES name casing...")
     courses = normalize_text_columns(courses)

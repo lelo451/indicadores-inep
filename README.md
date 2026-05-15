@@ -9,6 +9,7 @@ IDD.
 
 ```
 .
+├── pipeline.py                      # Entrada recomendada: roda consolidar → ies
 ├── normalizacao.py                  # Tabelas canônicas + helpers de texto (shared)
 ├── consolidar_indicadores.py        # Consolida todos os arquivos de data/
 ├── enrich_ies_sigla.py              # Raspa sigla/org./categoria do e-MEC
@@ -22,8 +23,10 @@ IDD.
 ├── ies/                             # Pacote: lista mestra de IES
 │   ├── _common.py                   #   caminhos e helpers
 │   ├── censo.py                     #   etapa 1: consolida Censo Superior
-│   ├── final.py                     #   etapa 2: mescla e-MEC + Censo
-│   └── __main__.py                  #   roda as duas etapas (python -m ies)
+│   ├── final.py                     #   etapa 2: mescla e-MEC + Censo;
+│   │                                #   etapa 3: reaplica metadados em
+│   │                                #            indicadores_consolidados
+│   └── __main__.py                  #   roda as três etapas (python -m ies)
 │
 ├── data/                            # Planilhas de indicadores (renomeadas)
 │   ├── IGC_2007.xlsx … IGC_2023.xlsx
@@ -70,7 +73,7 @@ Cloudflare do e-MEC).
 dicionario.enade  ┐
 dicionario.idd    ┴─→ consolidar_indicadores  ┬─→ enrich_ies_sigla ┐
                                               │                     │
-                                              └──────────────────┐  ├─→ ies.final
+                                              └──────────────────┐  ├─→ ies.final ──→ reaplica em indicadores_consolidados
                                                                  │  │
                                                   ies.censo  ────┴──┘
 ```
@@ -84,20 +87,25 @@ dicionario.idd    ┴─→ consolidar_indicadores  ┬─→ enrich_ies_sigla �
    metadados de IES descredenciadas/fundidas que nem e-MEC nem Censo cobrem.
    Marca `complemento='i'`.
 
-Comandos, na ordem:
+Após gerar `list_ies_final.xlsx`, o pacote `ies` reaplica `nome/sigla/
+organizacao/categoria` em `indicadores_consolidados.xlsx` (pulando IES com
+`complemento='i'`, que vieram dos próprios indicadores). Por isso, **sempre
+rode `python -m ies` depois de `consolidar_indicadores.py`** — ou use
+`pipeline.py`, que encadeia os dois.
+
+Comandos:
 
 ```bash
-# 1) Dicionários do INEP (ENADE + IDD)
-python -m dicionario                     # ou: python -m dicionario.enade / .idd
+# Pré-requisitos (rodam raramente):
+python -m dicionario                     # → dicionários do INEP (ENADE + IDD)
+python enrich_ies_sigla.py               # → Microdados/ies_siglas.csv (Chrome)
 
-# 2) Indicadores (usa os dicionários do passo 1)
+# Pipeline principal (consolidar + ies):
+python pipeline.py                       # → todos os outputs/ regenerados
+
+# Ou, separadamente:
 python consolidar_indicadores.py         # → outputs/indicadores_consolidados.xlsx
-
-# 3) Raspagem do e-MEC (usa a saída do passo 2 e/ou list_ies.csv)
-python enrich_ies_sigla.py               # → Microdados/ies_siglas.csv
-
-# 4) Lista mestra de IES (combina e-MEC + Censo + Indicadores)
-python -m ies                            # → outputs/list_ies_final.xlsx
+python -m ies                            # → list_ies_final.xlsx + reaplica em indicadores
 ```
 
 Todos os scripts resolvem caminhos relativos a partir do diretório onde estão
@@ -132,10 +140,13 @@ LEFT JOIN com o IGC no nível de IES.
   (`co_grupo=5` em vez de "Medicina Veterinária"). O consolidador usa as
   planilhas de dicionário do INEP (consolidadas previamente) para preencher os
   rótulos.
-- **IES normalizada para o ano mais recente.** Cada `Código da IES` é
-  reescrito em todos os anos com o Nome/Sigla/Categoria/Organização mais
-  recentes. Assim, "CEFET/PR" (2004) e "UTFPR" (2010+) — ambos IES código 588 —
-  aparecem como UTFPR/Universidade/Pública Federal em todas as linhas.
+- **IES normalizada via list_ies_final.** Nome/Sigla/Categoria/Organização
+  de cada `Código da IES` são unificados em todas as linhas pela etapa 3 de
+  `ies.final` (que reaplica os valores de `list_ies_final.xlsx` no indicadores),
+  usando e-MEC e Censo como fontes prioritárias. Assim, "CEFET/PR" (2004) e
+  "UTFPR" (2010+) — ambos IES código 588 — aparecem como UTFPR/Universidade/
+  Pública Federal em todas as linhas. IES marcadas com `complemento='i'`
+  (descredenciadas/fundidas) são puladas para evitar circularidade.
 - **IGC multi-aba.** Arquivos IGC pré-2017 dividem os dados por organização
   acadêmica em abas separadas (Universidades, Centros Universitários,
   Faculdades). A consolidação lê todas as abas relevantes e injeta a
